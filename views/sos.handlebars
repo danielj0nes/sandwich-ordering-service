@@ -1,0 +1,38 @@
+
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Sandwich Ordering Service - Contacts</title>
+		<meta name="description" content="Sandwich Ordering Service">
+		<meta name="author" content="Daniel Jones">
+		<link href="{{host}}/style.css" type="text/css" rel="stylesheet" />
+		<script type="module" src="{{host}}/main.js"></script>
+	</head>
+	<body>
+		<header>
+		<h1>Contacts</h1>
+		<a href="/logout">Log out</a>
+		</header>
+		{{#if msg}}
+ 			<aside>
+				<p class="msg">{{msg}}</p>
+			</aside>
+		{{/if}}
+		<main>
+		<table>
+			<tr><th>ID</th><th>User ID</th><th>User</th><th>Name</th><th>Contacted</th></tr>
+			{{#each records}}
+			<tr>
+				<td>{{this.id}}</td>
+				<td>{{this.userid}}</td>
+				<td>{{this.user}}</td>
+				<td>{{this.firstname}} {{this.lastname}}</td>
+				<td>{{this.lastcontact}}</td>
+			</tr>
+			{{/each}}
+		</table>
+		</main>
+	</body>
+</html>

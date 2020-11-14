@@ -1,0 +1,297 @@
+
+body {
+		font-family: Arial, Helvetica, sans-serif;
+		margin: 0;
+	}
+
+/* formats the red message boxes */
+aside {
+	max-width: 500px;
+	margin: auto;
+	background-color: yellow;
+}
+.msg {
+	border: 1px solid red;
+	font-weight: bold;
+	background-color: white;
+	color: red;
+	padding: 1em;
+	margin: 2em;
+	position: fixed;
+	top: 2em;
+}
+
+header {
+	background-color: #ccc;
+	border-bottom: 5px solid grey;
+	height: 8vw;
+}
+
+h1, h2, h3 {
+	margin: 0;
+	padding: 0;
+	color: #444;
+}
+
+h1 {
+	padding: 2.6vw;
+	float: left;
+	font-size: 3vw;
+	margin-left: 6vw;
+}
+
+h2 {
+	font-size: 2.5vw;
+	margin: 1vw;
+	margin-left: 0.6vw;
+}
+
+h3 {
+	font-size: 2vw;
+	margin: 1vw;
+	margin-left: 0.6vw;
+}
+
+header > a {
+	margin-top: 3vw;
+	margin-right: 3vw;
+	float: right;
+	font-size: 1.3vw;
+}
+
+header > img {
+	width: 7vw;
+	border-radius: 50%;
+	position: absolute;
+	left: 0.5vw;
+	top: 0.5vw;
+}
+
+p, legend {
+	font-size: 1.5vw;
+}
+
+main {
+	max-width: 800px;
+	margin: auto;
+	margin-top: 2em;
+	padding: 2em;
+	box-sizing: border-box;
+	background-color: lightgray;
+}
+
+article {
+	width: 50vw;
+	/* background-color: grey;
+	float: left; */
+}
+
+aside {
+	/* background-color: yellow;
+	float: right; */
+	width: 50vw;
+}
+
+main a {
+	color: black;
+	text-decoration: underline;
+}
+
+main a:hover {
+	color: red;
+	text-decoration: none;
+}
+
+section {
+	background-color: #DDD;
+	width: 24vw;
+	margin-top: 1vw;
+	padding: 1vw;
+	border-radius: 1vw;
+}
+
+section > p {
+	margin: 0;
+	padding: 0;
+	margin-bottom: 0.5vw;
+}
+
+section > h3 {
+	margin: 0;
+	padding: 0;
+	font-size: 1.8vw;
+}
+
+small {
+	display: block;
+	text-align: right;
+}
+
+/* ===== FORMS ===== */
+
+fieldset {
+	position: relative;
+	width: 25vw;
+	border: 1px solid #CCC;
+	padding-top: 4vw;
+}
+
+legend {
+	position:absolute;
+  top:0;
+	left:0;
+	width: 25.5vw;
+	background-color: #ccc;
+	border-bottom: 5px solid grey;
+	padding: 0.6vw;
+}
+
+input, textarea {
+	box-sizing: border-box;
+}
+
+input:focus {
+	outline:none;
+}
+
+/* input[type="file"] {
+	display: none;
+} */
+
+input[type="submit"], .button, header > a, body > a, .custom-file-upload {
+  background-color: grey;
+  border: 2px solid grey;
+  color: white;
+	padding: 0.4vw 0.8vw;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+	font-size: 1.5vw;
+	/* border-radius: 0.6vw; */
+}
+
+input[type="submit"]:hover, header > a:hover, .custom-file-upload:hover, .add:hover {
+  color: grey;
+  background-color: white;
+}
+
+input[type="text"], input[type="email"], input[type="password"], input[type="tel"], textarea, select {
+	font-size: 1.5vw;
+	width: 25vw;
+	border: 1px solid #CCC;
+	padding: 0.5vw;
+	/* margin-bottom: 1vw; */
+	/* border-radius: 0.6vw; */
+}
+
+textarea {
+	height: 10vw;
+	resize: none;
+}
+
+input:required, textarea:required {
+	border-width: 2px;
+}
+
+input:invalid, textarea:invalid {
+	border-color: red;
+}
+input:valid, textarea:valid {
+	border-color: darkgreen;
+}
+
+
+select {
+	width: 26.3vw;
+	-webkit-appearance: none;
+	-webkit-border-radius: 0px;
+}
+
+form > br {
+	line-height: 3vw;
+}
+
+
+
+dl {
+  width: 35vw;
+  overflow: hidden;
+  /* background: #ff0; */
+  padding: 0;
+	margin: 0;
+	font-size: 1.5vw;
+}
+dt {
+  float: left;
+  width: 10.5vw;
+  /* adjust the width; make sure the total of both is 100% */
+  /* background: #cc0; */
+  padding: 0.5vw;
+  margin: 0
+}
+dd {
+  float: left;
+  width: 21vw;
+  /* adjust the width; make sure the total of both is 100% */
+	/* background: #dd0; */
+	padding: 0.5vw;
+  margin: 0
+}
+
+/* ===== TABLES ===== */
+
+table {
+	border-collapse: collapse;
+	margin: auto;
+}
+
+table img {
+	width: 100px;
+}
+
+tr:nth-child(odd) {
+	background: #DDD;
+}
+
+td, th {
+	/* border: 1px solid grey; */
+	padding: 0.5vw;
+	font-size: 1.5vw;
+	text-align: left;
+}
+
+td:last-child, th:last-child {
+	text-align: right;
+}
+
+/* ===== ADD BUTTON ===== */
+
+button#add {
+	display: block;
+	position: fixed;
+	bottom: 1em;
+	right: 1em;
+	z-index: 5;
+	background-color: grey;
+	color: white;
+	font-size: 5em;
+	width: 1.2em;
+	block-size: border-box;
+	border-radius: 2em;
+	border: none;
+	cursor: pointer;
+}
+
+.add {
+	display: block;
+	position: fixed;
+	bottom: 1em;
+	right: 1em;
+	z-index: 5;
+	padding: 1em;
+}
+
+button#add:hover {
+	background-color: white;
+	color: grey;
+}
