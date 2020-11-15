@@ -1,26 +1,25 @@
 
 import Router from 'koa-router'
-import Contacts from '../modules/contacts.js'
+import Menu from '../modules/menu.js'
 
-const router = new Router({ prefix: '/sos' })
+const router = new Router({ prefix: '/order' })
 const dbName = 'website.db'
 
 async function checkAuth(ctx, next) {
-	console.log('secure router middleware')
 	console.log(ctx.hbs)
-	if(ctx.hbs.authorised !== true) return ctx.redirect('/login?msg=you need to log in&referrer=/sos')
+	if(ctx.hbs.authorised !== true) return ctx.redirect('/login?msg=you need to log in&referrer=/order')
 	await next()
 }
 
 router.use(checkAuth)
 
 router.get('/', async ctx => {
-	const contacts = await new Contacts(dbName)
+	const menu = await new Menu(dbName)
 	try {
-		const records = await contacts.all()
+		const records = await menu.all()
 		console.log(records)
 		ctx.hbs.records = records
-		await ctx.render('sos', ctx.hbs)
+		await ctx.render('order', ctx.hbs)
 	} catch(err) {
 		console.log(err)
 		ctx.hbs.error = err.message

@@ -4,15 +4,15 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Sandwich Ordering Service - Contacts</title>
-		<meta name="description" content="Sandwich Ordering Service">
+		<title>Order</title>
+		<meta name="description" content="Sandwich Ordering Service - Order">
 		<meta name="author" content="Daniel Jones">
 		<link href="{{host}}/style.css" type="text/css" rel="stylesheet" />
 		<script type="module" src="{{host}}/main.js"></script>
 	</head>
 	<body>
 		<header>
-		<h1>Contacts</h1>
+		<h1>Order</h1>
 		<a href="/logout">Log out</a>
 		</header>
 		{{#if msg}}
@@ -22,14 +22,13 @@
 		{{/if}}
 		<main>
 		<table>
-			<tr><th>ID</th><th>User ID</th><th>User</th><th>Name</th><th>Contacted</th></tr>
+			<tr><th>ID</th><th>Item</th><th>Price</th><th>Ingredients</th></tr>
 			{{#each records}}
 			<tr>
 				<td>{{this.id}}</td>
-				<td>{{this.userid}}</td>
-				<td>{{this.user}}</td>
-				<td>{{this.firstname}} {{this.lastname}}</td>
-				<td>{{this.lastcontact}}</td>
+				<td>{{this.itemname}}</td>
+				<td>{{this.price}}</td>
+				<td>{{this.ingredients}}</td>
 			</tr>
 			{{/each}}
 		</table>
