@@ -22,9 +22,10 @@
 		{{/if}}
 		<main>
 		<table>
-			<tr><th>ID</th><th>Item</th><th>Price</th><th>Ingredients</th></tr>
+			<tr><th>Photo</th><th>ID</th><th>Item</th><th>Price</th><th>Ingredients</th></tr>
 			{{#each records}}
 			<tr>
+				<td><img src="photos/{{this.photo}}" /></td>
 				<td>{{this.id}}</td>
 				<td>{{this.itemname}}</td>
 				<td>{{this.price}}</td>
@@ -33,5 +34,6 @@
 			{{/each}}
 		</table>
 		</main>
+		<a class="add" href="/order/edit-menu">Edit menu</a>
 	</body>
 </html>

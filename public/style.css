@@ -159,13 +159,14 @@ input:focus {
 } */
 
 input[type="submit"], .button, header > a, body > a, .custom-file-upload {
-  background-color: grey;
-  border: 2px solid grey;
-  color: white;
+	background-color: grey;
+	border-color: black;
+	border: 2px solid grey;
+	color: white;
 	padding: 0.4vw 0.8vw;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
+	text-align: center;
+	text-decoration: none;
+	display: inline-block;
 	font-size: 1.5vw;
 	/* border-radius: 0.6vw; */
 }
@@ -180,8 +181,23 @@ input[type="text"], input[type="email"], input[type="password"], input[type="tel
 	width: 25vw;
 	border: 1px solid #CCC;
 	padding: 0.5vw;
+	border-color: black;
 	/* margin-bottom: 1vw; */
 	/* border-radius: 0.6vw; */
+}
+
+label{
+  position:relative;
+  margin-right:-20px;
+}
+
+input[type='number']{
+	font-size: 1.5vw;
+	width: 25vw;
+	border: 1px solid #CCC;
+	padding: 0.5vw;
+	padding-left:20px;
+	text-align:left;
 }
 
 textarea {
@@ -196,6 +212,7 @@ input:required, textarea:required {
 input:invalid, textarea:invalid {
 	border-color: red;
 }
+
 input:valid, textarea:valid {
 	border-color: darkgreen;
 }
@@ -210,8 +227,6 @@ select {
 form > br {
 	line-height: 3vw;
 }
-
-
 
 dl {
   width: 35vw;

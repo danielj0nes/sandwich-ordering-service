@@ -26,5 +26,27 @@ router.get('/', async ctx => {
 		await ctx.render('error', ctx.hbs)
 	}
 })
+router.get('/edit-menu',  async ctx => {
+	await ctx.render('editmenu', ctx.hbs)
+})
+
+router.post('/edit-menu', async ctx => {
+	const menu = await new Menu(dbName)
+	try {
+		ctx.request.body.account = ctx.session.userid
+		if(ctx.request.files.picture.name) {
+			ctx.request.body.filePath = ctx.request.files.picture.path
+			ctx.request.body.fileName = ctx.request.files.picture.name
+			ctx.request.body.fileType = ctx.request.files.picture.type	
+		}
+		await menu.add(ctx.request.body)
+		return ctx.redirect('/order?msg=new item added')
+	} catch(err) {
+		console.log(err)
+		await ctx.render('error', ctx.hbs)
+	} finally {
+		menu.close()
+	}
+})
 
 export default router

@@ -1,0 +1,47 @@
+
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Customise the menu</title>
+		<meta name="description" content="Sandwich Ordering Service - Customise the menu">
+		<meta name="author" content="Daniel Jones">
+		<link href="{{host}}/style.css" type="text/css" rel="stylesheet" />
+		<script type="module" src="{{host}}/main.js"></script>
+	</head>
+	<body>
+		<header>
+		<h1>Customise the menu</h1>
+		
+		<a href="/logout">Log out</a>
+		</header>
+		{{#if msg}}
+ 			<aside>
+				<p class="msg">{{msg}}</p>
+			</aside>
+		{{/if}}
+		<main>
+			<h2>Add a new item to the menu</h2>
+			<form method="post" action="/order/edit-menu" enctype="multipart/form-data">
+				<p>
+					<label for="item">Item name</label><br />
+					<input type="text" name="item" placeholder="name of the new menu item" value="" autofocus required />
+				</p>
+				<p>
+					<label for="price">Price</label><br />
+					<label>£</label><input type="number" min="0.01" step="0.01" name="price" placeholder="price of the new item" value="" autofocus required />
+				</p>
+				<p>
+					<label for="item">Ingredients</label><br />
+					<input type="text" name="ingredients" placeholder="ingredients (e.g bacon, lettuce)" value=""/>
+				</p>
+				<p>
+					<label for="picture">Picture</label><br />
+					<input type="file" name="picture" accept="image/*" />
+				</p>
+				<p><input type="submit" value="Add new item"></p>
+			</form>
+		</main>
+	</body>
+</html>

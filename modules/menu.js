@@ -2,7 +2,8 @@
 /** @module menu */
 
 import sqlite from 'sqlite-async'
-
+import mime from 'mime-types'
+import fs from 'fs-extra'
 
 /**
  * 
@@ -20,7 +21,8 @@ class Menu {
 				id INTEGER PRIMARY KEY AUTOINCREMENT,\
 				itemname TEXT NOT NULL,\
 				price INTEGER NOT NULL,\
-				ingredients TEXT\
+				ingredients TEXT,\
+				photo TEXT\
 			);'
 			await this.db.run(sql)
 			return this
@@ -35,6 +37,29 @@ class Menu {
 		const sql = 'SELECT * FROM menu;'
 		const menu = await this.db.all(sql)
 		return menu
+	}
+	
+	async add(data) {
+		console.log(data)
+		let filename
+		if(data.fileName) {
+			filename = `${Date.now()}.${mime.extension(data.fileType)}` // Millisecond timestamp
+			await fs.copy(data.filePath, `public/photos/${filename}`)
+		}
+		try {
+			const sql = `INSERT INTO menu(itemname, price, ingredients, photo)\
+						VALUES("${data.item}", ${data.price}, "${data.ingredients}", "${filename}")`
+			await this.db.run(sql)
+			return true
+		} catch(err) {
+			console.log(err)
+			throw(err)
+		}
+		
+	}
+	
+	async close() {
+		await this.db.close()
 	}
 }
 
