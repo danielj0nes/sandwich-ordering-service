@@ -28,3 +28,5 @@ config.json
 *.mp4
 *.codio
 *.c9
+
+shell_script_testing.sh

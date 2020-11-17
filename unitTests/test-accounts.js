@@ -8,7 +8,7 @@ test('REGISTER : register and log in with a valid account', async test => {
 	try {
 		await account.register('doej', 'password', 'doej@gmail.com')
 	  const login = await account.login('doej', 'password')
-		test.is(login, true, 'unable to log in')
+		test.is(login, 1, 'unable to log in') // Check for return type of 1 because of autoincrementing userid
 	} catch(err) {
 		test.fail('error thrown')
 	} finally {

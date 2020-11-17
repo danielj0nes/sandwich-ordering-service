@@ -6,7 +6,7 @@ import mime from 'mime-types'
 import fs from 'fs-extra'
 
 /**
- * 
+ *
  * ES6 module that manages the menu in the Sandwich Ordering Service system.
  */
 class Menu {
@@ -38,7 +38,6 @@ class Menu {
 		const menu = await this.db.all(sql)
 		return menu
 	}
-	
 	async add(data) {
 		console.log(data)
 		let filename
@@ -53,11 +52,9 @@ class Menu {
 			return true
 		} catch(err) {
 			console.log(err)
-			throw(err)
+			throw err
 		}
-		
 	}
-	
 	async close() {
 		await this.db.close()
 	}

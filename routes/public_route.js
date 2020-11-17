@@ -15,7 +15,7 @@ const dbName = 'website.db'
 router.get('/', async ctx => {
 	try {
 		if(ctx.hbs.authorised) {
-			return ctx.redirect('/order?msg=you are logged in')
+			return ctx.redirect('/menu?msg=you are logged in')
 		} else {
 			return ctx.redirect('login?msg=you need to log in')
 		}
@@ -70,7 +70,7 @@ router.post('/login', async ctx => {
 		ctx.session.authorised = true
 		ctx.session.user = body.user
 		ctx.session.userid = id
-		const referrer = body.referrer || '/order'
+		const referrer = body.referrer || '/menu'
 		return ctx.redirect(`${referrer}?msg=you are now logged in...`)
 	} catch(err) {
 		console.log(err)

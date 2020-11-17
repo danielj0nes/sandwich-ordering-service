@@ -2,21 +2,24 @@
 
 set -e # using the options command to abort script at first error
 echo
-echo "PRE-COMMIT"
+echo "PRE-COMMIT HOOK TRIGGERED"
 
-EMAIL=$(git config user.email)
-
-# make sure the user has registered a valid university email address
-if [[ $EMAIL != *"@coventry.ac.uk" ]]; then
-	echo "  invalid config settings"
-	echo "  Your registered email is currently '$EMAIL'"
-	echo "  please run the following git commands:"
-	echo "    $ git config user.email xxx@coventry.ac.uk"
-	echo "    $ git config user.name 'zzz'"
-	echo "  where 'xxx' is your university username"
-	echo "  and 'zzz' is your name as it appears on your university ID badge"
-	echo
+# Check for errors detected by the linter
+if ./node_modules/.bin/eslint . | grep "a"; then
+	echo "Fix linting errors before committing"
 	exit 1
+else
+	echo "Code successfully linted"
+	exit 0
+fi
+
+# Check for errors detected by unit testing
+if ./node_modules/.bin/ava | grep "fail"; then
+	echo "Tests failed - fix errors before comitting"
+	exit 1
+else
+	echo "Tests successfully passed"
+	exit 0
 fi
 
 # see if the user is trying to merge a branch into master
@@ -42,6 +45,10 @@ if [ "$branch" = "master" ]; then
 	fi
 	exit 1 # commit will not execute
 fi
+
+echo "Commit successful :-)"
+
+
 
 # is the current branch a direct child of the master branch?
 # echo "checking parent branch"
@@ -71,6 +78,4 @@ fi
 #     exit 1
 # fi
 
-./node_modules/.bin/eslint .
 
-echo "  commit successful..."
