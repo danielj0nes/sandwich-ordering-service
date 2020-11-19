@@ -4,6 +4,8 @@ import Menu from '../modules/menu.js'
 
 const router = new Router({ prefix: '/menu' })
 const dbName = 'website.db'
+const ownerId = 4
+const openingTime = 11
 
 async function checkAuth(ctx, next) {
 	console.log(ctx.hbs)
@@ -16,16 +18,13 @@ router.use(checkAuth)
 router.get('/', async ctx => {
 	const menu = await new Menu(dbName)
 	try {
-		if(ctx.session.userid === 4) { // Check if the owner is logged in or not
-			const records = await menu.all()
-			console.log(records)
-			ctx.hbs.records = records
-			await ctx.render('owner_menu', ctx.hbs)
-		} else {
-			const records = await menu.all()
-			console.log(records)
-			ctx.hbs.records = records
-			await ctx.render('user_menu', ctx.hbs)
+		const records = await menu.all()
+		ctx.hbs.records = records
+		if(ctx.session.userid === ownerId) await ctx.render('owner_menu', ctx.hbs)
+		else {
+			const currentHours = new Date().getHours()
+			if(currentHours < openingTime) await ctx.render('user_menu', ctx.hbs)
+			else await ctx.render('error', ctx.hbs)
 		}
 	} catch(err) {
 		console.log(err)
@@ -33,13 +32,13 @@ router.get('/', async ctx => {
 		await ctx.render('error', ctx.hbs)
 	}
 })
+
 router.get('/edit', async ctx => {
-	if (ctx.session.userid === 4) {
+	if (ctx.session.userid === ownerId) {
 		await ctx.render('editmenu', ctx.hbs)
 	} else {
 		await ctx.render('error', ctx.hbs)
 	}
-	
 })
 
 router.post('/edit', async ctx => {

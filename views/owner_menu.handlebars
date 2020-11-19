@@ -8,12 +8,20 @@
 		<meta name="description" content="Sandwich Ordering Service - Main Menu - Owner">
 		<meta name="author" content="Daniel Jones">
 		<link href="{{host}}/style.css" type="text/css" rel="stylesheet" />
+		<script src='https://kit.fontawesome.com/a076d05399.js'></script>
 		<script type="module" src="{{host}}/main.js"></script>
 	</head>
 	<body>
 		<header>
 		<h1>Menu</h1>
-		<a href="/logout">Log out</a>
+		<div class="dropdown">
+			<button class="dropbtn"><i class='fas fa-user-alt' style='font-size:16px'></i> {{this.user}}</button>
+			<div class="dropdown-content">
+				<a href="#">Settings</a>
+				<a href="/menu/edit">Edit menu</a>
+				<a href="/logout">Log Out</a>
+			</div>
+		</div>
 		</header>
 		{{#if msg}}
  			<aside>
@@ -34,6 +42,5 @@
 			{{/each}}
 		</table>
 		</main>
-		<a class="add" href="/menu/edit">Edit menu</a>
 	</body>
 </html>

@@ -18,12 +18,12 @@ class Menu {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
 			const sql = 'CREATE TABLE IF NOT EXISTS menu(\
-				id INTEGER PRIMARY KEY AUTOINCREMENT,\
-				itemname TEXT NOT NULL,\
-				price INTEGER NOT NULL,\
-				ingredients TEXT,\
-				photo TEXT\
-			);'
+						id INTEGER PRIMARY KEY AUTOINCREMENT,\
+						itemname TEXT NOT NULL,\
+						price INTEGER NOT NULL,\
+						ingredients TEXT,\
+						photo TEXT\
+						);'
 			await this.db.run(sql)
 			return this
 		})()
