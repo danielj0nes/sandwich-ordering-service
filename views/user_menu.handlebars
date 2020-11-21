@@ -1,0 +1,45 @@
+
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Main menu for customers</title>
+		<meta name="description" content="Sandwich Ordering Service - Menu - Customer">
+		<meta name="author" content="Daniel Jones">
+		<link href="{{host}}/style.css" type="text/css" rel="stylesheet" />
+		<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+		<script type="module" src="{{host}}/main.js"></script>
+	</head>
+	<body>
+		<header>
+		<h1>Menu</h1>
+		<div class="dropdown">
+			<button class="dropbtn"><i class='fas fa-user-alt' style='font-size:16px'></i> {{this.user}}</button>
+			<div class="dropdown-content">
+				<a href="#">User Settings</a>
+				<a href="#">Order</a>
+				<a href="/logout">Log Out</a>
+			</div>
+		</div>
+		</header>
+		{{#if msg}}
+ 			<aside>
+				<p class="msg">{{msg}}</p>
+			</aside>
+		{{/if}}
+		<main>
+		<table>
+			<tr><th>Photo</th><th>Item</th><th>Price</th><th>Ingredients</th></tr>
+			{{#each records}}
+			<tr>
+				<td><img src="photos/{{this.photo}}" /></td>
+				<td>{{this.itemname}}</td>
+				<td>£{{this.price}}</td>
+				<td>{{this.ingredients}}</td>
+			</tr>
+			{{/each}}
+		</table>
+		</main>
+	</body>
+</html>
