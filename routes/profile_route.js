@@ -31,7 +31,7 @@ router.post('/', async ctx => {
 	try {
 		ctx.request.body.account = ctx.session.userid
 		await profile.add(ctx.request.body, ctx.session.userid)
-		return ctx.redirect('/profile?msg=new item added')
+		return ctx.redirect('/profile?msg=Profile updated')
 	} catch(err) {
 		console.log(err)
 		await ctx.render('error', ctx.hbs)

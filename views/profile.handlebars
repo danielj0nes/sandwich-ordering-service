@@ -4,8 +4,8 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>User Profile</title>
-		<meta name="description" content="Sandwich Ordering Service - Menu - Customer">
+		<title>View / Update Profile</title>
+		<meta name="description" content="Sandwich Ordering Service - Profile">
 		<meta name="author" content="Daniel Jones">
 		<link href="{{host}}/style.css" type="text/css" rel="stylesheet" />
 		<script src='https://kit.fontawesome.com/a076d05399.js'></script>
@@ -13,7 +13,7 @@
 	</head>
 	<body>
 		<header>
-		<h1>Profile</h1>
+		<h1>User Profile</h1>
 		<div class="dropdown">
 			<button class="dropbtn"><i class='fas fa-user-alt' style='font-size:16px'></i> {{this.user}}</button>
 			<div class="dropdown-content">
@@ -29,49 +29,40 @@
 			</aside>
 		{{/if}}
 		<main>
-		<table>
+		<h2>View and update your information</h2>
 			{{#each records}}
-			<tr><th>First Name: {{this.firstName}}</th></tr>
-			<tr><th>Last Name: {{this.lastName}}</th></tr>
-			<tr><th>Company: {{this.company}}</th></tr>
-			<tr><th>Address Line 1: {{this.addressLine1}}</th></tr>
-			<tr><th>Address Line 2: {{this.addressLine2}}</th></tr>
-			<tr><th>City: {{this.city}}</th></tr>
-			<tr><th>Postcode: {{this.postcode}}</th></tr>
-			{{/each}}
-		</table>
-		<form method="post" action="/profile" enctype="multipart/form-data">
+			<form method="post" action="/profile" enctype="multipart/form-data">
 				<p>
 					<label for="firstName">First Name</label><br />
-					<input type="text" name="firstName" placeholder="e.g John" value="" autofocus required />
+					<input type="text" name="firstName" placeholder="e.g John" value="{{this.firstName}}"/>
 				</p>
 				<p>
 					<label for="lastName">Last Name</label><br />
-					<input type="text" name="lastName" placeholder="e.g Smith" value=""/>
+					<input type="text" name="lastName" placeholder="e.g Smith" value="{{this.lastName}}"/>
 				</p>
 				<p>
 					<label for="company">Company</label><br />
-					<input type="text" name="company" placeholder="e.g Google" value=""/>
+					<input type="text" name="company" placeholder="e.g Coventry University" value="{{this.company}}"/>
 				</p>
 				<p>
 					<label for="addressLine1">Address Line 1</label><br />
-					<input type="text" name="addressLine1" placeholder="e.g 3 Gulson Rd" value=""/>
+					<input type="text" name="addressLine1" placeholder="e.g 3 Gulson Rd" value="{{this.addressLine1}}"/>
 				</p>
 				<p>
 					<label for="addressLine2">Address Line 2 (Optional)</label><br />
-					<input type="text" name="addressLine2" value=""/>
+					<input type="text" name="addressLine2" value="{{this.addressLine2}}"/>
 				</p>
 				<p>
-					<label for="city">Town / City</label><br />
-					<input type="text" name="city" placeholder="e.g Coventry" value=""/>
+					<label for="city">City</label><br />
+					<input type="text" name="city" placeholder="e.g City" value="{{this.city}}"/>
 				</p>
 				<p>
 					<label for="postcode">Postcode</label><br />
-					<input type="text" name="postcode" placeholder="e.g CV1 2JH" value=""/>
+					<input type="text" name="postcode" placeholder="e.g CV1 2JH" value="{{this.postcode}}"/>
 				</p>
-			
-				<p><input type="submit" value="Update"></p>
+				<p><input type="submit" value="Update values"></p>
 			</form>
+			{{/each}}
 		</main>
 	</body>
 </html>

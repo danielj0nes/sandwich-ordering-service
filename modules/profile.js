@@ -5,7 +5,7 @@ import sqlite from 'sqlite-async'
 
 /**
  *
- * ES6 module that manages the profile of a user in the Sandwich Ordering Service system.
+ * ES6 module that manages the user profile, tied to the users table in the Sandwich Ordering Service system.
  */
 class Profile {
 	/**
@@ -15,38 +15,37 @@ class Profile {
 	constructor(dbName = ':memory:') {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
-			const sql = 'CREATE TABLE IF NOT EXISTS users\
-				(id INTEGER PRIMARY KEY AUTOINCREMENT, user TEXT, pass TEXT, email TEXT,\
-				firstName TEXT, lastName TEXT, company TEXT, addressLine1 TEXT,\
-				addressLine2 TEXT, city TEXT, postcode TEXT);'
+			const sql = 'CREATE TABLE IF NOT EXISTS users(\
+						id INTEGER PRIMARY KEY AUTOINCREMENT, user TEXT,\
+						pass TEXT, email TEXT, firstName TEXT, lastName TEXT,\
+						company TEXT, addressLine1 TEXT, addressLine2 TEXT,\
+						city TEXT, postcode TEXT);'
 			await this.db.run(sql)
 			return this
 		})()
 	}
-
 	/**
 	 * Retrieves all information about the user based on their userid
 	 * @param {number} - The id number of the currently logged-in user
 	 * @returns {Array} returns an array containing all of the information regarding the logged-in user
 	 */
 	async all(userid) {
-		const sql = `SELECT * FROM users WHERE id="${userid}";`
+		const sql = `SELECT * FROM users WHERE id=${userid};`
 		const userinfo = await this.db.all(sql)
 		return userinfo
 	}
 	/**
-	 * Adds new information provided by the user into the users table
-	 * @param {data}
-	 * @returns {boolean} returns true upon success otherwise throw error
+	 * Update profile related user data by the id of the user
+	 * @params {Object} - json object (request body)
+	 * @params {Number} - the id of a user
+	 * @returns {Boolean} - returns true upon success
 	 */
 	async add(data, userid) {
-		console.log(data)
-		console.log(typeof data)
 		try {
-			const sql = `UPDATE users SET firstName = "${data.firstName}", lastName = "${data.lastName}",\
-						company = "${data.company}", addressLine1 = "${data.addressLine1}",\
-						addressLine2 = "${data.addressLine2}", city = "${data.city}",\
-						postcode = "${data.postcode}" WHERE id = ${userid}`
+			const sql = `UPDATE users SET firstName = "${data.firstName}",\
+						lastName = "${data.lastName}", company = "${data.company}",\
+						addressLine1 = "${data.addressLine1}", addressLine2 = "${data.addressLine2}",\
+						city = "${data.city}", postcode = "${data.postcode}" WHERE id = ${userid};`
 			await this.db.run(sql)
 			return true
 		} catch(err) {
