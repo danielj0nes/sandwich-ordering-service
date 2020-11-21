@@ -15,7 +15,7 @@ fi
 
 # Check for errors detected by unit testing
 if ./node_modules/.bin/ava | grep "fail"; then
-	echo "Tests failed - fix errors before comitting"
+	echo "One or more tests failed - fix errors before comitting"
 	exit 1
 else
 	echo "Tests successfully passed"
