@@ -5,7 +5,7 @@ import sqlite from 'sqlite-async'
 
 /**
  *
- * ES6 module that manages the user profile, tied to the users table in the Sandwich Ordering Service system.
+ * ES6 module that manages the user profile, tied to the users table in the Sandwich Ordering Service system
  */
 class Profile {
 	/**

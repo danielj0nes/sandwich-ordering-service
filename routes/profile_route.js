@@ -7,7 +7,7 @@ const dbName = 'website.db'
 
 async function checkAuth(ctx, next) {
 	console.log(ctx.hbs)
-	if(ctx.hbs.authorised !== true) return ctx.redirect('/login?msg=you need to log in&referrer=/menu')
+	if(ctx.hbs.authorised !== true) return ctx.redirect('/login?msg=you need to log in&referrer=/profile')
 	await next()
 }
 
