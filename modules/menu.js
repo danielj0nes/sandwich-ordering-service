@@ -22,6 +22,7 @@ class Menu {
 						itemname TEXT NOT NULL,\
 						price INTEGER NOT NULL,\
 						ingredients TEXT,\
+						category TEXT NOT NULL,\
 						photo TEXT\
 						);'
 			await this.db.run(sql)
@@ -46,14 +47,25 @@ class Menu {
 			await fs.copy(data.filePath, `public/photos/${filename}`)
 		}
 		try {
-			const sql = `INSERT INTO menu(itemname, price, ingredients, photo)\
-						VALUES("${data.item}", ${data.price}, "${data.ingredients}", "${filename}")`
+			const sql = `INSERT INTO menu(itemname, price, ingredients, category, photo)\
+						VALUES("${data.item}", ${data.price}, "${data.ingredients}", "${data.category}", "${filename}")`
 			await this.db.run(sql)
 			return true
 		} catch(err) {
 			console.log(err)
 			throw err
 		}
+	}
+	async get_categories() {
+		const sql = 'SELECT DISTINCT category FROM menu;'
+		const categories = await this.db.all(sql)
+		return categories
+	}
+	
+	async get_by_category(category) {
+		const sql = `SELECT * FROM menu WHERE category = "${category}"`
+		const items = await this.db.all(sql)
+		return items
 	}
 	async close() {
 		await this.db.close()

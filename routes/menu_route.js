@@ -5,7 +5,7 @@ import Menu from '../modules/menu.js'
 const router = new Router({ prefix: '/menu' })
 const dbName = 'website.db'
 const ownerId = 4
-const openingTime = 11
+const openingTime = 100
 
 async function checkAuth(ctx, next) {
 	console.log(ctx.hbs)
@@ -19,7 +19,9 @@ router.get('/', async ctx => {
 	const menu = await new Menu(dbName)
 	try {
 		const records = await menu.all()
+		const categories = await menu.get_categories()
 		ctx.hbs.records = records
+		ctx.hbs.categories = categories
 		if(ctx.session.userid === ownerId) await ctx.render('owner_menu', ctx.hbs)
 		else {
 			const currentHours = new Date().getHours()
@@ -31,6 +33,10 @@ router.get('/', async ctx => {
 		ctx.hbs.error = err.message
 		await ctx.render('error', ctx.hbs)
 	}
+})
+
+router.get('/sandwiches', async ctx => {
+	
 })
 
 router.get('/edit', async ctx => {

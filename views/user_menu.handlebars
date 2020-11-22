@@ -29,6 +29,12 @@
 			</aside>
 		{{/if}}
 		<main>
+		<div class="vertical-menu">
+			<a href="/" class="active"></a>
+			{{#each categories}}
+			<a href="/{{this.category}}">{{this.category}}</a>
+			{{/each}}
+		</div> 
 		<table>
 			<tr><th>Photo</th><th>Item</th><th>Price</th><th>Ingredients</th></tr>
 			{{#each records}}
