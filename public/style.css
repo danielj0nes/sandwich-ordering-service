@@ -257,27 +257,23 @@ dd {
 
 table {
 	border-collapse: collapse;
-	margin: auto;
+	display: inline-block;
+    margin: 0 auto;
 }
 
 table img {
 	width: 100px;
-}
-
-tr:nth-child(odd) {
-	background: #DDD;
+	height: 100px;
+	object-fit: scale-down;
 }
 
 td, th {
 	/* border: 1px solid grey; */
 	padding: 0.5vw;
-	font-size: 1.5vw;
+	font-size: 1vw;
 	text-align: left;
 }
 
-td:last-child, th:last-child {
-	text-align: right;
-}
 
 /* ===== ADD BUTTON ===== */
 
@@ -315,6 +311,8 @@ a:link{
 	text-decoration: none;
 	color: grey;
 }
+
+/* ===== DROP DOWN MENU ===== */
 .dropbtn {
 	color: #444;
 	font-size: 16px;
@@ -352,3 +350,17 @@ a:link{
 .dropdown:hover .dropdown-content {display: block;}
 
 .dropdown:hover .dropbtn {background-color: grey;}
+
+/* ===== PANELS ===== */
+
+#menu {
+	float: left;
+	width: 50%;
+}
+#order {
+	position: fixed;
+	top: 10em;
+	right: 20em;
+	background-color: #ccc;
+
+}

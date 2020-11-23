@@ -38,7 +38,11 @@
 				</p>
 				<p>
 					<label for="item">Category</label><br />
-					<input type="text" name="category" placeholder="category (e.g Sandwich, Drink)" value="" autofocus required/>
+					<select name="category">
+						{{#each categories}}
+						<option value="{{this.category}}">{{this.category}}</option>
+						{{/each}}
+					</select>
 				</p>
 				<p>
 					<label for="picture">Picture</label><br />

@@ -35,7 +35,7 @@ class Menu {
 	 * @returns {Array} returns an array containing all of the menu items in the database
 	 */
 	async all() {
-		const sql = 'SELECT * FROM menu;'
+		const sql = 'SELECT * FROM menu ORDER BY category;'
 		const menu = await this.db.all(sql)
 		return menu
 	}
@@ -56,13 +56,12 @@ class Menu {
 			throw err
 		}
 	}
-	async get_categories() {
-		const sql = 'SELECT DISTINCT category FROM menu;'
+	async getCategories() {
+		const sql = 'SELECT DISTINCT category FROM menu'
 		const categories = await this.db.all(sql)
 		return categories
 	}
-	
-	async get_by_category(category) {
+	async getByCategory(category) {
 		const sql = `SELECT * FROM menu WHERE category = "${category}"`
 		const items = await this.db.all(sql)
 		return items

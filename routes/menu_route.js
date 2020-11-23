@@ -18,10 +18,14 @@ router.use(checkAuth)
 router.get('/', async ctx => {
 	const menu = await new Menu(dbName)
 	try {
-		const records = await menu.all()
-		const categories = await menu.get_categories()
-		ctx.hbs.records = records
+		const categories = await menu.getCategories()
+		const sandwiches = await menu.getByCategory('Sandwich')
+		const snacks = await menu.getByCategory('Snack')
+		const drinks = await menu.getByCategory('Drink')
 		ctx.hbs.categories = categories
+		ctx.hbs.sandwiches = sandwiches
+		ctx.hbs.snacks = snacks
+		ctx.hbs.drinks = drinks
 		if(ctx.session.userid === ownerId) await ctx.render('owner_menu', ctx.hbs)
 		else {
 			const currentHours = new Date().getHours()
@@ -35,12 +39,11 @@ router.get('/', async ctx => {
 	}
 })
 
-router.get('/sandwiches', async ctx => {
-	
-})
-
 router.get('/edit', async ctx => {
+	const menu = await new Menu(dbName)
 	if (ctx.session.userid === ownerId) {
+		const categories = await menu.getCategories()
+		ctx.hbs.categories = categories
 		await ctx.render('editmenu', ctx.hbs)
 	} else {
 		await ctx.render('error', ctx.hbs)

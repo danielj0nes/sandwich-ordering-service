@@ -28,24 +28,65 @@
 				<p class="msg">{{msg}}</p>
 			</aside>
 		{{/if}}
-		<main>
-		<div class="vertical-menu">
-			<a href="/" class="active"></a>
-			{{#each categories}}
-			<a href="/{{this.category}}">{{this.category}}</a>
-			{{/each}}
-		</div> 
-		<table>
-			<tr><th>Photo</th><th>Item</th><th>Price</th><th>Ingredients</th></tr>
-			{{#each records}}
-			<tr>
-				<td><img src="photos/{{this.photo}}" /></td>
-				<td>{{this.itemname}}</td>
-				<td>£{{this.price}}</td>
-				<td>{{this.ingredients}}</td>
-			</tr>
-			{{/each}}
-		</table>
-		</main>
+		<select name="select-categories" id="select-categories" onchange="document.location.href=this.value">
+		{{#each categories}}
+		<option value="#{{this.category}}">{{this.category}}</option>
+		{{/each}}		
+		</select>
+		<div id="main-wrapper">
+			<div id="menu">
+			<table>
+				<tbody id="Sandwich">
+					<th>Sandwiches</th>
+				</tbody>
+				{{#each sandwiches}}
+				<tr>
+					<td><img src="photos/{{this.photo}}" /></td>
+					<td>{{this.itemname}}</td>
+					<td>£{{this.price}}</td>
+					<td>{{this.ingredients}}</td>
+					<td><input id="add-to-order" type="submit" value="Add to order" onclick='addToOrder("{{this.itemname}}", "{{this.price}}")'></td>
+				</tr>
+				{{/each}}
+				<tbody id="Snack">
+					<th>Snacks</th>
+				</tbody>
+				{{#each snacks}}
+				<tr>
+					<td><img src="photos/{{this.photo}}" /></td>
+					<td>{{this.itemname}}</td>
+					<td>£{{this.price}}</td>
+					<td>{{this.ingredients}}</td>
+					<td><input id="add-to-order" type="submit" value="Add to order" onclick='addToOrder("{{this.itemname}}", "{{this.price}}")'></td>
+				</tr>
+				{{/each}}
+				<tbody id="Drink">
+					<th>Drinks</th>
+				</tbody>
+				{{#each drinks}}
+				<tr>
+					<td><img src="photos/{{this.photo}}" /></td>
+					<td>{{this.itemname}}</td>
+					<td>£{{this.price}}</td>
+					<td>{{this.ingredients}}</td>
+					<td><input id="add-to-order" type="submit" value="Add to order" onclick='addToOrder("{{this.itemname}}", "{{this.price}}")'></td>
+				</tr>
+				{{/each}}
+			</table>
+		</div>
+		<div id="order">
+			<h2>Order</h2>
+			<div id="order-content">
+				
+			</div>
+			<input id="checkout" type="submit" value="Checkout">
+		</div>
+	</div>	
+	<script>
+		function addToOrder(name, price) {
+			var order = document.getElementById('order-content');
+			order.innerHTML += `<p>${name}, ${price}</p>`;
+		}
+	</script>
 	</body>
 </html>
