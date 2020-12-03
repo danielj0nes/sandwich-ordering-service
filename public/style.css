@@ -318,13 +318,14 @@ a:link{
 	font-size: 16px;
 	border: none;
 	padding: 16px;
-	background-color: #ccc;
+	background-color: transparent;
 	text-transform: capitalize;
 	font-weight: bold;
 }
 
 .dropdown {
-	position: relative;
+	position: fixed;
+	right: 3em;
 	float: right;
 	display: inline-block;
 }
@@ -351,16 +352,37 @@ a:link{
 
 .dropdown:hover .dropbtn {background-color: grey;}
 
-/* ===== PANELS ===== */
+/* ===== ORDER PAGE PANELS ===== */
 
 #menu {
 	float: left;
-	width: 50%;
+	position: absolute;
+	
 }
 #order {
+	font-size: 10px;
 	position: fixed;
-	top: 10em;
-	right: 20em;
+	top: 20em;
+	right: 5em;
 	background-color: #ccc;
+	height: 350px;
+	width: 650px;
+	overflow: auto;
+	border-style: groove;
+}
+#order-item {
+	font-size: 12px;
+}
 
+#checkout {
+	position: fixed;
+	right: 3em;
+	top: 8em;
+}
+
+#select-categories {
+	position: fixed;
+	top: 3em;
+	width: 10em;
+	right: 10em;
 }

@@ -8,7 +8,7 @@
 		<meta name="description" content="Sandwich Ordering Service - Menu - Customer">
 		<meta name="author" content="Daniel Jones">
 		<link href="{{host}}/style.css" type="text/css" rel="stylesheet" />
-		<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+		<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 		<script type="module" src="{{host}}/main.js"></script>
 	</head>
 	<body>
@@ -38,6 +38,10 @@
 			<table>
 				<tbody id="Sandwich">
 					<th>Sandwiches</th>
+					<th></th>
+					<th></th>
+					<th>Ingredients</th>
+					
 				</tbody>
 				{{#each sandwiches}}
 				<tr>
@@ -75,18 +79,24 @@
 			</table>
 		</div>
 		<div id="order">
-			<h2>Order</h2>
-			<div id="order-content">
-				
-			</div>
+			<h2>Your order</h2>
 			<input id="checkout" type="submit" value="Checkout">
+			<div id="order-content">
+				<ol id="order-list">
+				</ol>
+			</div>
+			
 		</div>
 	</div>	
 	<script>
+		var orderContents = []
 		function addToOrder(name, price) {
-			var order = document.getElementById('order-content');
-			order.innerHTML += `<p>${name}, ${price}</p>`;
+			var order = document.getElementById('order-list')
+			order.innerHTML += `<li id="order-item">${name}, ${price}</li>`
+			orderContents.push((name, price))
+			console.log(orderContents)
 		}
+		
 	</script>
 	</body>
 </html>
