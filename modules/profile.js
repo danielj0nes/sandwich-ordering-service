@@ -1,5 +1,8 @@
-
-/** @module profile */
+/**
+ * The purpose of this file is to handle all CRUD operations on the database associated with user profiles
+ * @module modules/profile
+ * @author Daniel Jones
+ */
 
 import sqlite from 'sqlite-async'
 
@@ -41,7 +44,7 @@ class Profile {
 	 * @params {Number} - the id of a user
 	 * @returns {Boolean} - returns true upon success
 	 */
-	async add(data, userid) {
+	async update(data, userid) {
 		try {
 			const sql = `UPDATE users SET firstName = "${data.firstName}",\
 						lastName = "${data.lastName}", company = "${data.company}",\

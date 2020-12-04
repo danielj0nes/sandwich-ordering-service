@@ -1,5 +1,8 @@
-
-/** @module menu */
+/**
+ * The purpose of this file is to handle all CRUD operations on the database associated with the menu
+ * @module modules/menu
+ * @author Daniel Jones
+ */
 
 import sqlite from 'sqlite-async'
 import mime from 'mime-types'

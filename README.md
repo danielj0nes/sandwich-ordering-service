@@ -12,6 +12,7 @@ The following accounts in conjunction with the password `p455w0rd` allow the sys
 ## Completed
 
 * Stage 1 part 1 - Customers can login and set up a profile
+* Stage 1 part 2 - Customers can add items to their order and checkout
 
 ## To do
 

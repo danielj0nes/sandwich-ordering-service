@@ -13,6 +13,7 @@
 	</head>
 	<body>
 		<header>
+			
 		<h1>Menu</h1>
 		<div class="dropdown">
 			<button class="dropbtn"><i class='fas fa-user-alt' style='font-size:16px'></i> {{this.user}}</button>
@@ -49,7 +50,7 @@
 					<td>{{this.itemname}}</td>
 					<td>£{{this.price}}</td>
 					<td>{{this.ingredients}}</td>
-					<td><input id="add-to-order" type="submit" value="Add to order" onclick='addToOrder("{{this.itemname}}", "{{this.price}}")'></td>
+					<td><input id="add-to-order" type="submit" value="Add to order" onclick='addToOrder("{{this.id}}", "{{this.itemname}}", {{this.price}}); calculateTotal()'></td>
 				</tr>
 				{{/each}}
 				<tbody id="Snack">
@@ -61,7 +62,7 @@
 					<td>{{this.itemname}}</td>
 					<td>£{{this.price}}</td>
 					<td>{{this.ingredients}}</td>
-					<td><input id="add-to-order" type="submit" value="Add to order" onclick='addToOrder("{{this.itemname}}", "{{this.price}}")'></td>
+					<td><input id="add-to-order" type="submit" value="Add to order" onclick='addToOrder("{{this.id}}", "{{this.itemname}}", {{this.price}}); calculateTotal()'></td>
 				</tr>
 				{{/each}}
 				<tbody id="Drink">
@@ -73,30 +74,65 @@
 					<td>{{this.itemname}}</td>
 					<td>£{{this.price}}</td>
 					<td>{{this.ingredients}}</td>
-					<td><input id="add-to-order" type="submit" value="Add to order" onclick='addToOrder("{{this.itemname}}", "{{this.price}}")'></td>
+					<td><input id="add-to-order" type="submit" value="Add to order" onclick='addToOrder("{{this.id}}", "{{this.itemname}}", {{this.price}}); calculateTotal()'></td>
 				</tr>
 				{{/each}}
 			</table>
 		</div>
 		<div id="order">
 			<h2>Your order</h2>
-			<input id="checkout" type="submit" value="Checkout">
+			<form method="post" action="/checkout" enctype="multipart/form-data">
+			<input hidden type="text" id="userorder" name="userorder"/>
+			<input id="checkout" type="submit" value="Checkout" onclick="passOrder()">
+			</form>
+			
 			<div id="order-content">
 				<ol id="order-list">
 				</ol>
+			<div id="order-total-label">
+				<b>Total: £<div id="order-total-value">0.00</div></b>
+			</div>
 			</div>
 			
 		</div>
 	</div>	
 	<script>
 		var orderContents = []
-		function addToOrder(name, price) {
+		
+		function addToOrder (id, name, price) {
 			var order = document.getElementById('order-list')
-			order.innerHTML += `<li id="order-item">${name}, ${price}</li>`
-			orderContents.push((name, price))
-			console.log(orderContents)
+			order.innerHTML += `<div id="div${id}">
+								<button type="button" id="remove-button" onclick='removeItem("div${id}", "${id}")'>Remove</button>
+								<li id="order-item">${name}, ${price}</li>
+								</div>` // Appends item information to the order section HTML and updates the orderContents array
+			orderContents.push({id, name, price})
 		}
 		
+		function calculateTotal () {
+			var orderTotal = 0
+			for (var item of orderContents) {
+				orderTotal += item.price // Counting of price values to get the summation
+			}
+			document.getElementById('order-total-value').innerHTML = orderTotal.toFixed(2) // Convert to two decimal places due to currency
+			return orderTotal.toFixed(2)
+		}
+		
+		function removeItem(item, id) {
+			for (var toRemove of orderContents) {
+				if (toRemove.id === id) {
+					orderContents.splice(orderContents.indexOf(toRemove), 1) // Search for matching ID in array and remove first occurence
+					break
+				}
+			}
+			document.getElementById(item).remove() // Update the order HTML content panel
+			calculateTotal() // Update total price since item removed
+		}
+		
+		function passOrder () {
+			const total = parseFloat(calculateTotal())
+			orderContents.push({'total': total})
+			document.getElementById("userorder").value += JSON.stringify(orderContents) // Append string-JSON form of orderContents for POSTing on submission
+		}
 	</script>
 	</body>
 </html>

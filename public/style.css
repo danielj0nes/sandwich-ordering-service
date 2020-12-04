@@ -372,6 +372,7 @@ a:link{
 }
 #order-item {
 	font-size: 12px;
+	margin-bottom: 10px;
 }
 
 #checkout {
@@ -385,4 +386,27 @@ a:link{
 	top: 3em;
 	width: 10em;
 	right: 10em;
+}
+
+#order-total-label {
+	position: fixed;
+	right: 9em;
+	top: 15em;
+	font-size: 20px;
+}
+
+#order-total-value {
+	position: fixed;
+	right: 6.1em;
+	top: 15em;
+	font-size: 20px;
+}
+
+#remove-button {
+	display: inline-block;
+	position: absolute;
+	left: 25em;
+	height: 20px;
+	font-size: 10px;
+	
 }
