@@ -4,10 +4,11 @@
  * @author Daniel Jones
  */
 import Router from 'koa-router'
+import Order from '../modules/orders.js'
 
 const prefix = '/checkout'
 const router = new Router({ prefix: prefix })
-// const dbName = 'website.db'
+const dbName = 'website.db'
 
 async function checkAuth(ctx, next) {
 	console.log(ctx.hbs)
@@ -24,10 +25,25 @@ router.post('/', checkout)
  * @param {object} ctx - json object containing the request and associated headers
  */
 async function checkout(ctx) {
+	const order = await new Order(dbName)
 	let data = ctx.request.body
-	data = JSON.parse(data.userorder)
-	console.log(data)
-	return ctx.redirect('/menu')
+	try {
+		if (data.total === 0) {
+			return ctx.redirect('/menu?msg=you need to add items to your order before checking out&referrer=/checkout')
+		} else {
+			data = JSON.parse(data.userorder)
+			data["userid"] = ctx.session.userid
+			console.log(data)
+			await order.add(data)
+			const test = await order.getById(data.userid)
+			console.log(test)
+			return ctx.redirect('/menu')
+		}
+	} catch(err) {
+		console.log(err)
+	} finally {
+		order.close()
+	}
 }
 
 /** Export the router (which includes the associated methods) for use in routes.js */

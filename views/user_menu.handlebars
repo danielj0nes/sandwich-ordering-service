@@ -98,7 +98,7 @@
 	</div>	
 	<script>
 		var orderContents = []
-		
+		var toSend = {}
 		function addToOrder (id, name, price) {
 			var order = document.getElementById('order-list')
 			order.innerHTML += `<div id="div${id}">
@@ -130,8 +130,9 @@
 		
 		function passOrder () {
 			const total = parseFloat(calculateTotal())
-			orderContents.push({'total': total})
-			document.getElementById("userorder").value += JSON.stringify(orderContents) // Append string-JSON form of orderContents for POSTing on submission
+			toSend["total"] = total
+			toSend["orderContents"] = orderContents
+			document.getElementById("userorder").value += JSON.stringify(toSend) // Append string-JSON form of orderContents for POSTing on submission
 		}
 	</script>
 	</body>
