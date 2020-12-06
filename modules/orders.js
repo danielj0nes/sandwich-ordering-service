@@ -5,8 +5,6 @@
  */
 
 import sqlite from 'sqlite-async'
-import mime from 'mime-types'
-import fs from 'fs-extra'
 
 /**
  *
@@ -40,6 +38,9 @@ class Order {
 	 */
 	async add(data) {
 		const orderItems = JSON.stringify(data.orderContents)
+		if (data.total === 0) {
+			return false
+		}
 		try {
 			const sql = `INSERT INTO orders(items, userid, price)\
 						VALUES('${orderItems}', ${data.userid}, ${data.total})`
@@ -53,7 +54,12 @@ class Order {
 	async getById(userid) {
 		const sql = `SELECT * FROM orders WHERE userid = ${userid} and completed = 0`
 		const order = await this.db.all(sql)
-		return order
+		if (order.length === 0) {
+			return false
+		} else {
+			return order
+		}
+		
 	}
 	async getByCategory(category) {
 		const sql = `SELECT * FROM menu WHERE category = "${category}"`

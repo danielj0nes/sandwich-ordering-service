@@ -17,10 +17,11 @@ async function checkAuth(ctx, next) {
 }
 
 router.use(checkAuth)
+router.get('/', order)
 router.post('/', checkout)
 
 /**
- * Fetches menu data using helper functions defined in the menu module
+ * Fetches order data using helper functions defined in the menu module
  * Checks whether the client is logged in as the owner or as a customer, renders seperate pages accordingly
  * @param {object} ctx - json object containing the request and associated headers
  */
@@ -28,16 +29,26 @@ async function checkout(ctx) {
 	const order = await new Order(dbName)
 	let data = ctx.request.body
 	try {
-		if (data.total === 0) {
+		data = JSON.parse(data.userorder)
+		data['userid'] = ctx.session.userid
+		await order.add(data)
+		return ctx.redirect('/checkout')
+	} catch(err) {
+		console.log(err)
+	} finally {
+		order.close()
+	}
+}
+
+async function order(ctx) {
+	const order = await new Order(dbName)
+	try {
+		const userOrder = await order.getById(ctx.session.userid)
+		if (userOrder === false) {
 			return ctx.redirect('/menu?msg=you need to add items to your order before checking out&referrer=/checkout')
 		} else {
-			data = JSON.parse(data.userorder)
-			data["userid"] = ctx.session.userid
-			console.log(data)
-			await order.add(data)
-			const test = await order.getById(data.userid)
-			console.log(test)
-			return ctx.redirect('/menu')
+			ctx.hbs.order = userOrder
+			await ctx.render('checkout', ctx.hbs)
 		}
 	} catch(err) {
 		console.log(err)

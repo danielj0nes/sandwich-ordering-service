@@ -362,7 +362,7 @@ a:link{
 #order {
 	font-size: 10px;
 	position: fixed;
-	top: 20em;
+	top: 25em;
 	right: 5em;
 	background-color: #ccc;
 	height: 350px;
@@ -378,7 +378,7 @@ a:link{
 #checkout {
 	position: fixed;
 	right: 3em;
-	top: 8em;
+	top: 10em;
 }
 
 #select-categories {
@@ -387,18 +387,25 @@ a:link{
 	width: 10em;
 	right: 10em;
 }
+#select-category-label {
+	position: fixed;
+	top: 3em;
+	right: 25em;
+	width: 100px;
+	font-size: 20px;
+}
 
 #order-total-label {
 	position: fixed;
 	right: 9em;
-	top: 15em;
+	top: 18em;
 	font-size: 20px;
 }
 
 #order-total-value {
 	position: fixed;
 	right: 6.1em;
-	top: 15em;
+	top: 18em;
 	font-size: 20px;
 }
 

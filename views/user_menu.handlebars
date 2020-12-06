@@ -19,7 +19,8 @@
 			<button class="dropbtn"><i class='fas fa-user-alt' style='font-size:16px'></i> {{this.user}}</button>
 			<div class="dropdown-content">
 				<a href="/profile">Profile</a>
-				<a href="#">Order</a>
+				<a href="#">Track order</a>
+				<a href="#">Order history</a>
 				<a href="/logout">Log Out</a>
 			</div>
 		</div>
@@ -29,11 +30,13 @@
 				<p class="msg">{{msg}}</p>
 			</aside>
 		{{/if}}
+		<label id="select-category-label">Jump to</label>
 		<select name="select-categories" id="select-categories" onchange="document.location.href=this.value">
 		{{#each categories}}
 		<option value="#{{this.category}}">{{this.category}}</option>
 		{{/each}}		
 		</select>
+		
 		<div id="main-wrapper">
 			<div id="menu">
 			<table>
