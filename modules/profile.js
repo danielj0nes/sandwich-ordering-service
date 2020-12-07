@@ -30,8 +30,8 @@ class Profile {
 
 	/**
 	 * Returns the relevant data from the users table queried by the user id
-	 * @params {Number} - the id of a user
-	 * @returns {Boolean} - returns an array containing all of the user details for
+	 * @params {Number} the id of a user
+	 * @returns {Boolean} returns an array containing all of the user details for
 	 */
 	async all(userid) {
 		const sql = `SELECT * FROM users WHERE id = ${userid};`
@@ -40,9 +40,9 @@ class Profile {
 	}
 	/**
 	 * Update profile related user data by the id of the user
-	 * @params {Object} - json object (request body)
-	 * @params {Number} - the id of a user
-	 * @returns {Boolean} - returns true upon success
+	 * @params {Object} json object (request body)
+	 * @params {Number} the id of a user
+	 * @returns {Boolean} returns true upon success
 	 */
 	async update(data, userid) {
 		try {
@@ -61,5 +61,5 @@ class Profile {
 		await this.db.close()
 	}
 }
-
+/* Export the Profile object (which includes the associated methods) */
 export default Profile

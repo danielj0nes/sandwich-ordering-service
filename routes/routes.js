@@ -1,4 +1,9 @@
-
+/**
+ * File to obtain and connect the various routers from the different route files
+ * This code was provided via the initial project template but edited and added to, facilitating new functionality
+ * @module routes/routes
+ * @author Mark Tyers / Daniel Jones
+ */
 import Router from 'koa-router'
 import bodyParser from 'koa-body'
 
@@ -15,5 +20,5 @@ for (const router of nestedRoutes) {
 	mainRouter.use(router.routes())
 	mainRouter.use(router.allowedMethods())
 }
-
+/* Export the mainRouter (which includes the associated methods) for use in index.js */
 export default mainRouter

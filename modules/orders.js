@@ -10,8 +10,7 @@ const orderNumberLength = 10
 const sliceLength = -2
 
 /**
- *
- * ES6 module that manages orders in the Sandwich Ordering Service system.
+ * ES6 module that manages orders in the Sandwich Ordering Service system tied to the orders table in the database.
  */
 class Order {
 	/**
@@ -36,8 +35,9 @@ class Order {
 	}
 
 	/**
-	 * Retrieves all the items from the menu
-	 * @returns {Boolean} returns true upon success and false upon failure
+	 * Add a new order into the database
+	 * @param {Object} JSON object containing the request headers and values
+	 * @return {Boolean} returns true upon success and false upon failure
 	 */
 	async add(data) {
 		const orderItems = JSON.stringify(data.orderContents)
@@ -56,6 +56,11 @@ class Order {
 			}
 		}
 	}
+	/**
+	 * Helper function used in conjunction with the 'add' function
+	 * Updates the last inserted record with additional data
+	 * This includes: the orderNumber and itemNames
+	 */
 	async updateLast() {
 		let sql = 'SELECT * FROM orders where id = (SELECT MAX(id) FROM orders);'
 		const userOrder = await this.db.all(sql) // Get the newly inserted record
@@ -69,6 +74,12 @@ class Order {
 			  itemNames = "${itemNames}" WHERE id = ${userOrder[0].id}`
 		await this.db.run(sql)
 	}
+	/**
+	 * Returns an order or multiple orders that pertain to a user and are not yet marked as complete
+	 * @param {Integer} The ID of a user
+	 * @return {Boolean} Returns false if there are no existing orders found
+	 * @return {Object} Otherwise returns the records retrieved from the database in JSON format
+	 */
 	async getById(userid) {
 		const sql = `SELECT * FROM orders WHERE userid = ${userid} and completed = 0;`
 		const userOrder = await this.db.all(sql)
@@ -82,5 +93,5 @@ class Order {
 		await this.db.close()
 	}
 }
-
+/* Export the Order object (which includes the associated methods) */
 export default Order

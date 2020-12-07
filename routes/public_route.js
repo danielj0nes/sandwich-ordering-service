@@ -1,14 +1,17 @@
-
+/**
+ * File to define the API route handlers for the public login and registration functionality.
+ * This code was provided via the initial project template
+ * @module routes/public_route
+ * @author Mark Tyers
+ */
 import Router from 'koa-router'
+import Accounts from '../modules/accounts.js'
 
 const router = new Router()
-
-import Accounts from '../modules/accounts.js'
 const dbName = 'website.db'
 
 /**
  * The Sandwich Ordering Service home page.
- *
  * @name Home Page
  * @route {GET} /
  */
@@ -27,7 +30,6 @@ router.get('/', async ctx => {
 
 /**
  * The user registration page.
- *
  * @name Register Page
  * @route {GET} /register
  */
@@ -35,7 +37,6 @@ router.get('/register', async ctx => await ctx.render('register'))
 
 /**
  * The script to process new user registrations.
- *
  * @name Register Script
  * @route {POST} /register
  */
@@ -87,5 +88,5 @@ router.get('/logout', async ctx => {
 	delete ctx.session.userid
 	ctx.redirect('/?msg=you are now logged out')
 })
-
+/* Export the router (which includes the associated methods) for use in routes.js */
 export default router

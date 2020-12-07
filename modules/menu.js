@@ -1,5 +1,5 @@
 /**
- * The purpose of this file is to handle all CRUD operations on the database associated with the menu
+ * The purpose of this file is to handle an assortment of CRUD operations on the database associated with the menu
  * @module modules/menu
  * @author Daniel Jones
  */
@@ -9,8 +9,7 @@ import mime from 'mime-types'
 import fs from 'fs-extra'
 
 /**
- *
- * ES6 module that manages the menu in the Sandwich Ordering Service system.
+ * ES6 module that manages the menu in the Sandwich Ordering Service system tied to the menu table in the database.
  */
 class Menu {
 	/**
@@ -35,13 +34,18 @@ class Menu {
 
 	/**
 	 * Retrieves all the items from the menu
-	 * @returns {Array} returns an array containing all of the menu items in the database
+	 * @return {Object} returns a JSON object containing all of the menu items and their headers from the database
 	 */
 	async all() {
 		const sql = 'SELECT * FROM menu ORDER BY category;'
 		const menu = await this.db.all(sql)
 		return menu
 	}
+	/**
+	 * Adds a new item to the menu
+	 * @param {Object} - takes in the request in the form of a JSON object containing headers and values
+	 * @return {Object} - returns a JSON object containing all of the menu items and their headers from the database
+	 */
 	async add(data) {
 		console.log(data)
 		let filename
@@ -59,11 +63,20 @@ class Menu {
 			throw err
 		}
 	}
+	/**
+	 * Returns a list of categories from the menu table in the databse
+	 * @return {Object} - returns a JSON object containing all of the categories
+	 */
 	async getCategories() {
 		const sql = 'SELECT DISTINCT category FROM menu'
 		const categories = await this.db.all(sql)
 		return categories
 	}
+	/**
+	 * Returns a list of menu items that are linked to a given category
+	 * @param {String} - the name of a menu category
+	 * @return {Object} - returns a JSON object containing all of the categories
+	 */
 	async getByCategory(category) {
 		const sql = `SELECT * FROM menu WHERE category = "${category}"`
 		const items = await this.db.all(sql)
@@ -73,5 +86,5 @@ class Menu {
 		await this.db.close()
 	}
 }
-
+/* Export the Menu object (which includes the associated methods) */
 export default Menu

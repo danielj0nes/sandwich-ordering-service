@@ -1,5 +1,5 @@
 /**
- * File to define the API route handlers for the checkout.
+ * File to define the API route handlers for checkout functionality.
  * @module routes/checkout_route
  * @author Daniel Jones
  */
@@ -17,12 +17,33 @@ async function checkAuth(ctx, next) {
 }
 
 router.use(checkAuth)
-router.get('/', order)
+router.get('/', retrieveOrder)
 router.post('/', sendToCheckout)
 
 /**
- * Fetches order data using helper functions defined in the orders module
- * @param {object} ctx - json object containing the request and associated headers
+ * Retrieve an order or several orders associated to a user that have not yet been marked as complete
+ * @param {Object} JSON object containing the request and associated headers
+ */
+async function retrieveOrder(ctx) {
+	const order = await new Order(dbName)
+	try {
+		const userOrder = await order.getById(ctx.session.userid)
+		if (userOrder === false) { // If the order contents are blank, redirect the user and prompt them to add items
+			return ctx.redirect('/menu?msg=you need to add items to your order before checking out&referrer=/checkout')
+		} else {
+			ctx.hbs.order = userOrder
+			await ctx.render('checkout', ctx.hbs)
+		}
+	} catch(err) {
+		console.log(err)
+	} finally {
+		order.close()
+	}
+}
+/**
+ * Inserts order data obtained via a POST request using helper functions defined in the orders module
+ * @param {Object} JSON object containing the request and associated headers
+ * @return {Object} redirect object that sends the user to the checkout page upon successful POST
  */
 async function sendToCheckout(ctx) {
 	const order = await new Order(dbName)
@@ -32,23 +53,6 @@ async function sendToCheckout(ctx) {
 		data['userid'] = ctx.session.userid
 		await order.add(data)
 		return ctx.redirect('/checkout')
-	} catch(err) {
-		console.log(err)
-	} finally {
-		order.close()
-	}
-}
-
-async function order(ctx) {
-	const order = await new Order(dbName)
-	try {
-		const userOrder = await order.getById(ctx.session.userid)
-		if (userOrder === false) {
-			return ctx.redirect('/menu?msg=you need to add items to your order before checking out&referrer=/checkout')
-		} else {
-			ctx.hbs.order = userOrder
-			await ctx.render('checkout', ctx.hbs)
-		}
 	} catch(err) {
 		console.log(err)
 	} finally {

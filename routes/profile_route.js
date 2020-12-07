@@ -1,4 +1,8 @@
-
+/**
+ * File to define the API route handlers for a user's profile.
+ * @module routes/profile_route
+ * @author Daniel Jones
+ */
 import Router from 'koa-router'
 import Profile from '../modules/profile.js'
 
@@ -12,8 +16,14 @@ async function checkAuth(ctx, next) {
 }
 
 router.use(checkAuth)
+router.get('/', viewProfile)
+router.get('/', updateProfile)
 
-router.get('/', async ctx => {
+/**
+ * Fetches the logged in user's profile data upon GET request using helper functions defined in the profile module
+ * @param {Object} ctx - json object containing the request and associated headers
+ */
+async function viewProfile(ctx) {
 	const profile = await new Profile(dbName)
 	try {
 		const records = await profile.all(ctx.session.userid)
@@ -24,9 +34,13 @@ router.get('/', async ctx => {
 		ctx.hbs.error = err.message
 		await ctx.render('error', ctx.hbs)
 	}
-})
-
-router.post('/', async ctx => {
+}
+/**
+ * Updates the logged in user's profile upon POST request using helper functions defined in the profile module
+ * @param {Object} JSON object containing the request and associated headers
+ * @return {Object} cReturns a redirect object notifying the user that the profile has been updated, upon updating profile data
+ */
+async function updateProfile(ctx) {
 	const profile = await new Profile(dbName)
 	try {
 		console.log(ctx.request.body)
@@ -39,6 +53,6 @@ router.post('/', async ctx => {
 	} finally {
 		profile.close()
 	}
-})
-
+}
+/* Export the router (which includes the associated methods) for use in routes.js */
 export default router

@@ -1,5 +1,8 @@
-
-/** @module Accounts */
+/**
+ * The purpose of this file is to handle logging in and registering functionality
+ * @module modules/accounts
+ * @author Mark Tyers
+ */
 
 import bcrypt from 'bcrypt-promise'
 import sqlite from 'sqlite-async'
