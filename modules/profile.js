@@ -27,21 +27,23 @@ class Profile {
 			return this
 		})()
 	}
-
+	async insert() {
+		// to do
+	}
 	/**
 	 * Returns the relevant data from the users table queried by the user id
-	 * @params {Number} the id of a user
-	 * @returns {Boolean} returns an array containing all of the user details for
+	 * @params {Integer} userid - the id of a user
+	 * @returns {Object} returns a JSON object containing the headers and values pertaining to the given user ID
 	 */
-	async all(userid) {
+	async getById(userid) {
 		const sql = `SELECT * FROM users WHERE id = ${userid};`
 		const profile = await this.db.all(sql)
 		return profile
 	}
 	/**
 	 * Update profile related user data by the id of the user
-	 * @params {Object} json object (request body)
-	 * @params {Number} the id of a user
+	 * @params {Object} data - json object (request body)
+	 * @params {Integer} userid - the id of a user
 	 * @returns {Boolean} returns true upon success
 	 */
 	async update(data, userid) {

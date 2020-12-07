@@ -43,8 +43,8 @@ class Menu {
 	}
 	/**
 	 * Adds a new item to the menu
-	 * @param {Object} - takes in the request in the form of a JSON object containing headers and values
-	 * @return {Object} - returns a JSON object containing all of the menu items and their headers from the database
+	 * @param {Object} data - takes the POST request body in the form of a JSON object containing headers and values
+	 * @return {Object} returns a JSON object containing all of the menu items and their headers from the database
 	 */
 	async add(data) {
 		console.log(data)
@@ -74,7 +74,7 @@ class Menu {
 	}
 	/**
 	 * Returns a list of menu items that are linked to a given category
-	 * @param {String} - the name of a menu category
+	 * @param {String} category - the name of a menu category
 	 * @return {Object} - returns a JSON object containing all of the categories
 	 */
 	async getByCategory(category) {

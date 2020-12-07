@@ -2,7 +2,7 @@
  * File to define the API route handlers for the public login and registration functionality.
  * This code was provided via the initial project template
  * @module routes/public_route
- * @author Mark Tyers
+ * @author Mark Tyers + Daniel Jones
  */
 import Router from 'koa-router'
 import Accounts from '../modules/accounts.js'
@@ -26,7 +26,6 @@ router.get('/', async ctx => {
 		await ctx.render('error', ctx.hbs)
 	}
 })
-
 
 /**
  * The user registration page.
@@ -57,11 +56,21 @@ router.post('/register', async ctx => {
 	}
 })
 
+/**
+ * The user login page.
+ * @name Login Page
+ * @route {GET} /login
+ */
 router.get('/login', async ctx => {
 	console.log(ctx.hbs)
 	await ctx.render('login', ctx.hbs)
 })
 
+/**
+ * The script to process a login event.
+ * @name Login Script
+ * @route {POST} /login
+ */
 router.post('/login', async ctx => {
 	const account = await new Accounts(dbName)
 	ctx.hbs.body = ctx.request.body
@@ -82,11 +91,17 @@ router.post('/login', async ctx => {
 	}
 })
 
+/**
+ * The script to process a logout event
+ * @name Logout Script
+ * @route {GET} /logout
+ */
 router.get('/logout', async ctx => {
 	ctx.session.authorised = null
 	delete ctx.session.user
 	delete ctx.session.userid
 	ctx.redirect('/?msg=you are now logged out')
 })
+
 /* Export the router (which includes the associated methods) for use in routes.js */
 export default router

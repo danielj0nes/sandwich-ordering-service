@@ -1,7 +1,7 @@
 /**
  * The purpose of this file is to handle logging in and registering functionality
  * @module modules/accounts
- * @author Mark Tyers
+ * @author Mark Tyers + Daniel Jones
  */
 
 import bcrypt from 'bcrypt-promise'
@@ -22,8 +22,11 @@ class Accounts {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
 			// we need this table to store the user accounts
-			const sql = 'CREATE TABLE IF NOT EXISTS users\
-				(id INTEGER PRIMARY KEY AUTOINCREMENT, user TEXT, pass TEXT, email TEXT);'
+			const sql = 'CREATE TABLE IF NOT EXISTS users(\
+						id INTEGER PRIMARY KEY AUTOINCREMENT, user TEXT,\
+						pass TEXT, email TEXT, firstName TEXT, lastName TEXT,\
+						company TEXT, addressLine1 TEXT, addressLine2 TEXT,\
+						city TEXT, postcode TEXT);'
 			await this.db.run(sql)
 			return this
 		})()

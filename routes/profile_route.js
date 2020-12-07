@@ -26,7 +26,7 @@ router.get('/', updateProfile)
 async function viewProfile(ctx) {
 	const profile = await new Profile(dbName)
 	try {
-		const records = await profile.all(ctx.session.userid)
+		const records = await profile.getById(ctx.session.userid)
 		ctx.hbs.records = records
 		await ctx.render('profile', ctx.hbs)
 	} catch(err) {
@@ -37,8 +37,8 @@ async function viewProfile(ctx) {
 }
 /**
  * Updates the logged in user's profile upon POST request using helper functions defined in the profile module
- * @param {Object} JSON object containing the request and associated headers
- * @return {Object} cReturns a redirect object notifying the user that the profile has been updated, upon updating profile data
+ * @param {Object} ctx - JSON object containing the request and associated headers
+ * @return {Object} Returns a redirect object notifying the user that the profile has been updated
  */
 async function updateProfile(ctx) {
 	const profile = await new Profile(dbName)

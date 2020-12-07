@@ -36,7 +36,7 @@ class Order {
 
 	/**
 	 * Add a new order into the database
-	 * @param {Object} JSON object containing the request headers and values
+	 * @param {Object} data - JSON object containing the request headers and values
 	 * @return {Boolean} returns true upon success and false upon failure
 	 */
 	async add(data) {
@@ -76,7 +76,7 @@ class Order {
 	}
 	/**
 	 * Returns an order or multiple orders that pertain to a user and are not yet marked as complete
-	 * @param {Integer} The ID of a user
+	 * @param {Integer} userid - The ID of a user
 	 * @return {Boolean} Returns false if there are no existing orders found
 	 * @return {Object} Otherwise returns the records retrieved from the database in JSON format
 	 */

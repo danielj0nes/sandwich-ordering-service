@@ -22,7 +22,7 @@ router.post('/', sendToCheckout)
 
 /**
  * Retrieve an order or several orders associated to a user that have not yet been marked as complete
- * @param {Object} JSON object containing the request and associated headers
+ * @param {Object} ctx - JSON object containing the request and associated headers
  */
 async function retrieveOrder(ctx) {
 	const order = await new Order(dbName)
@@ -42,7 +42,7 @@ async function retrieveOrder(ctx) {
 }
 /**
  * Inserts order data obtained via a POST request using helper functions defined in the orders module
- * @param {Object} JSON object containing the request and associated headers
+ * @param {Object} ctx - JSON object containing the request and associated headers
  * @return {Object} redirect object that sends the user to the checkout page upon successful POST
  */
 async function sendToCheckout(ctx) {

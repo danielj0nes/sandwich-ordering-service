@@ -11,7 +11,7 @@ const router = new Router({ prefix: prefix })
 const dbName = 'website.db'
 const ownerId = 4
 /**
- * @const {number} - The hour at which the menu becomes available to the customer
+ * @const {integer} - The hour at which the menu becomes available to the customer
  */
 const openingTime = 100 // Change this to 11
 
@@ -29,7 +29,7 @@ router.post('/edit', updateMenu)
 /**
  * Fetches menu data using helper functions defined in the menu module
  * Checks the current time against the openingTime variable to ensure that orders cannot be placed after a certain time
- * @param {Object} JSON object containing the request and associated headers
+ * @param {Object} ctx - JSON object containing the request and associated headers
  */
 async function getMenu(ctx) {
 	const menu = await new Menu(dbName)
@@ -51,7 +51,7 @@ async function getMenu(ctx) {
 /**
  * Renders the edit menu page providing the owner is the one logged in
  * Passes over the menu categories so that one can be selected when adding a new item to the menu
- * @param {object} JSON object containing the request and associated headers
+ * @param {object} ctx - JSON object containing the request and associated headers
  */
 async function editMenu(ctx) {
 	const menu = await new Menu(dbName)
@@ -65,8 +65,8 @@ async function editMenu(ctx) {
 }
 /**
  * Handle adding a new item to the menu via a POST request on the menu/edit page
- * @param {Object} JSON object containing the request and associated headers
- * @return {Object} returns a redirect object, notifying the user that the item has been added, after the new item has been added
+ * @param {Object} ctx - JSON object containing the request and associated headers
+ * @return {Object} returns a redirect object notifying the user that the item has been added
  */
 async function updateMenu(ctx) {
 	const menu = await new Menu(dbName)
