@@ -257,27 +257,23 @@ dd {
 
 table {
 	border-collapse: collapse;
-	margin: auto;
+	display: inline-block;
+    margin: 0 auto;
 }
 
 table img {
 	width: 100px;
-}
-
-tr:nth-child(odd) {
-	background: #DDD;
+	height: 100px;
+	object-fit: scale-down;
 }
 
 td, th {
 	/* border: 1px solid grey; */
 	padding: 0.5vw;
-	font-size: 1.5vw;
+	font-size: 1vw;
 	text-align: left;
 }
 
-td:last-child, th:last-child {
-	text-align: right;
-}
 
 /* ===== ADD BUTTON ===== */
 
@@ -315,18 +311,21 @@ a:link{
 	text-decoration: none;
 	color: grey;
 }
+
+/* ===== DROP DOWN MENU ===== */
 .dropbtn {
 	color: #444;
 	font-size: 16px;
 	border: none;
 	padding: 16px;
-	background-color: #ccc;
+	background-color: transparent;
 	text-transform: capitalize;
 	font-weight: bold;
 }
 
 .dropdown {
-	position: relative;
+	position: fixed;
+	right: 3em;
 	float: right;
 	display: inline-block;
 }
@@ -352,3 +351,69 @@ a:link{
 .dropdown:hover .dropdown-content {display: block;}
 
 .dropdown:hover .dropbtn {background-color: grey;}
+
+/* ===== ORDER PAGE PANELS ===== */
+
+#menu {
+	float: left;
+	position: absolute;
+	
+}
+#order {
+	font-size: 10px;
+	position: fixed;
+	top: 25em;
+	right: 5em;
+	background-color: #ccc;
+	height: 350px;
+	width: 650px;
+	overflow: auto;
+	border-style: groove;
+}
+#order-item {
+	font-size: 12px;
+	margin-bottom: 10px;
+}
+
+#checkout {
+	position: fixed;
+	right: 3em;
+	top: 10em;
+}
+
+#select-categories {
+	position: fixed;
+	top: 3em;
+	width: 10em;
+	right: 10em;
+}
+#select-category-label {
+	position: fixed;
+	top: 3em;
+	right: 25em;
+	width: 100px;
+	font-size: 20px;
+}
+
+#order-total-label {
+	position: fixed;
+	right: 9em;
+	top: 18em;
+	font-size: 20px;
+}
+
+#order-total-value {
+	position: fixed;
+	right: 6.1em;
+	top: 18em;
+	font-size: 20px;
+}
+
+#remove-button {
+	display: inline-block;
+	position: absolute;
+	left: 25em;
+	height: 20px;
+	font-size: 10px;
+	
+}

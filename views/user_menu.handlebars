@@ -8,17 +8,19 @@
 		<meta name="description" content="Sandwich Ordering Service - Menu - Customer">
 		<meta name="author" content="Daniel Jones">
 		<link href="{{host}}/style.css" type="text/css" rel="stylesheet" />
-		<script src='https://kit.fontawesome.com/a076d05399.js'></script>
+		<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 		<script type="module" src="{{host}}/main.js"></script>
 	</head>
 	<body>
 		<header>
+			
 		<h1>Menu</h1>
 		<div class="dropdown">
 			<button class="dropbtn"><i class='fas fa-user-alt' style='font-size:16px'></i> {{this.user}}</button>
 			<div class="dropdown-content">
 				<a href="/profile">Profile</a>
-				<a href="#">Order</a>
+				<a href="#">Track order</a>
+				<a href="#">Order history</a>
 				<a href="/logout">Log Out</a>
 			</div>
 		</div>
@@ -28,18 +30,115 @@
 				<p class="msg">{{msg}}</p>
 			</aside>
 		{{/if}}
-		<main>
-		<table>
-			<tr><th>Photo</th><th>Item</th><th>Price</th><th>Ingredients</th></tr>
-			{{#each records}}
-			<tr>
-				<td><img src="photos/{{this.photo}}" /></td>
-				<td>{{this.itemname}}</td>
-				<td>£{{this.price}}</td>
-				<td>{{this.ingredients}}</td>
-			</tr>
-			{{/each}}
-		</table>
-		</main>
+		<label id="select-category-label">Jump to</label>
+		<select name="select-categories" id="select-categories" onchange="document.location.href=this.value">
+		{{#each categories}}
+		<option value="#{{this.category}}">{{this.category}}</option>
+		{{/each}}		
+		</select>
+		
+		<div id="main-wrapper">
+			<div id="menu">
+			<table>
+				<tbody id="Sandwich">
+					<th>Sandwiches</th>
+					<th></th>
+					<th></th>
+					<th>Ingredients</th>
+					
+				</tbody>
+				{{#each sandwiches}}
+				<tr>
+					<td><img src="photos/{{this.photo}}" /></td>
+					<td>{{this.itemname}}</td>
+					<td>£{{this.price}}</td>
+					<td>{{this.ingredients}}</td>
+					<td><input id="add-to-order" type="submit" value="Add to order" onclick='addToOrder("{{this.id}}", "{{this.itemname}}", {{this.price}}); calculateTotal()'></td>
+				</tr>
+				{{/each}}
+				<tbody id="Snack">
+					<th>Snacks</th>
+				</tbody>
+				{{#each snacks}}
+				<tr>
+					<td><img src="photos/{{this.photo}}" /></td>
+					<td>{{this.itemname}}</td>
+					<td>£{{this.price}}</td>
+					<td>{{this.ingredients}}</td>
+					<td><input id="add-to-order" type="submit" value="Add to order" onclick='addToOrder("{{this.id}}", "{{this.itemname}}", {{this.price}}); calculateTotal()'></td>
+				</tr>
+				{{/each}}
+				<tbody id="Drink">
+					<th>Drinks</th>
+				</tbody>
+				{{#each drinks}}
+				<tr>
+					<td><img src="photos/{{this.photo}}" /></td>
+					<td>{{this.itemname}}</td>
+					<td>£{{this.price}}</td>
+					<td>{{this.ingredients}}</td>
+					<td><input id="add-to-order" type="submit" value="Add to order" onclick='addToOrder("{{this.id}}", "{{this.itemname}}", {{this.price}}); calculateTotal()'></td>
+				</tr>
+				{{/each}}
+			</table>
+		</div>
+		<div id="order">
+			<h2>Your order</h2>
+			<form method="post" action="/checkout" enctype="multipart/form-data">
+			<input hidden type="text" id="userorder" name="userorder"/>
+			<input id="checkout" type="submit" value="Checkout" onclick="passOrder()">
+			</form>
+			
+			<div id="order-content">
+				<ol id="order-list">
+				</ol>
+			<div id="order-total-label">
+				<b>Total: £<div id="order-total-value">0.00</div></b>
+			</div>
+			</div>
+			
+		</div>
+	</div>	
+	<script>
+		let orderContents = []
+		let toSend = {}
+		
+		function addToOrder(id, name, price) {
+			let order = document.getElementById('order-list')
+			order.innerHTML += `<div id="div${id}">
+								<button type="button" id="remove-button" onclick='removeItem("div${id}", "${id}")'>Remove</button>
+								<li id="order-item">${name}, ${price}</li>
+								</div>` // Appends item information to the order section HTML and updates the orderContents array
+			orderContents.push({id, name, price})
+		}
+		
+		function calculateTotal() {
+			let orderTotal = 0
+			for (let item of orderContents) {
+				orderTotal += item.price // Counting of price values to get the summation
+			}
+			document.getElementById('order-total-value').innerHTML = orderTotal.toFixed(2) // Convert to two decimal places due to currency
+			return orderTotal.toFixed(2)
+		}
+		
+		function removeItem(item, id) {
+			for (let toRemove of orderContents) {
+				if (toRemove.id === id) {
+					orderContents.splice(orderContents.indexOf(toRemove), 1) // Search for matching ID in array and remove first occurence
+					break
+				}
+			}
+			document.getElementById(item).remove() // Update the order HTML content panel
+			calculateTotal() // Update total price since item removed
+		}
+		
+		function passOrder() {
+			const total = parseFloat(calculateTotal())
+			toSend["total"] = total
+			toSend["orderContents"] = orderContents
+			document.getElementById("userorder").value += JSON.stringify(toSend) // Append string-JSON form of orderContents for POSTing on submission
+		}
+		
+	</script>
 	</body>
 </html>

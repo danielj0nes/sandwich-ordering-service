@@ -1,7 +1,3 @@
-# jonesd37-sem1
-Sandwich Ordering Service - Daniel Jones - 7929997
-=======
-
 # Sandwich Ordering Service - Daniel Jones - 7929997
 
 ## Testing
@@ -15,17 +11,11 @@ The following accounts in conjunction with the password `p455w0rd` allow the sys
 
 ## Completed
 
-Users can currently login to the system.
+* Stage 1 part 1 - Customers can login and set up a profile
+* Stage 1 part 2 - Customers can add items to their order and checkout
 
 ## To do
 
-### Part 1
-
-Each `customer` can log in and set up a profile which includes:
-
-1. Their first and last name.
-2. The name of the company where they work.
-3. The address including the postcode of the company.
 
 ### Part 2
 

@@ -1,0 +1,54 @@
+
+<!doctype html>
+
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>Checkout for customers</title>
+		<meta name="description" content="Sandwich Ordering Service - Checkout - Customer">
+		<meta name="author" content="Daniel Jones">
+		<link href="{{host}}/style.css" type="text/css" rel="stylesheet" />
+		<script src="https://kit.fontawesome.com/a076d05399.js"></script>
+		<script type="module" src="{{host}}/main.js"></script>
+	</head>
+	<body onload="processItems()">
+		<header>
+		<h1>Checkout</h1>
+		<div class="dropdown">
+			<button class="dropbtn"><i class='fas fa-user-alt' style='font-size:16px'></i> {{this.user}}</button>
+			<div class="dropdown-content">
+				<a href="/profile">Profile</a>
+				<a href="/menu">Menu</a>
+				<a href="#">Track order</a>
+				<a href="#">Order history</a>
+				<a href="/logout">Log Out</a>
+			</div>
+		</div>
+		</header>
+		<main>
+			<table>
+				<tr><th>Order Number</th><th>Price</th><th>Items</th></tr>
+				{{#each order}}
+				<tr>
+					<td>{{this.orderNumber}}</td>
+					<td>£{{this.price}}</td>
+					<td>{{this.itemNames}}</td>
+					<td><input id="confirm-order" type="submit" value="Confirm Order" onclick=""></td>
+				</tr>
+				{{/each}}
+			</table>
+		</main>
+		{{#if msg}}
+		
+ 			<aside>
+				<p class="msg">{{msg}}</p>
+			</aside>
+		{{/if}}
+	<script>
+		let order = {{{order}}}
+		function processItems() {
+			console.log(order.id)
+		}
+	</script>	
+	</body>
+</html>

@@ -29,8 +29,9 @@ router.get('/', async ctx => {
 router.post('/', async ctx => {
 	const profile = await new Profile(dbName)
 	try {
+		console.log(ctx.request.body)
 		ctx.request.body.account = ctx.session.userid
-		await profile.add(ctx.request.body, ctx.session.userid)
+		await profile.update(ctx.request.body, ctx.session.userid)
 		return ctx.redirect('/profile?msg=Profile updated')
 	} catch(err) {
 		console.log(err)
