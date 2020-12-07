@@ -6,6 +6,9 @@
 
 import sqlite from 'sqlite-async'
 
+const orderNumberLength = 10
+const sliceLength = -2
+
 /**
  *
  * ES6 module that manages orders in the Sandwich Ordering Service system.
@@ -34,37 +37,46 @@ class Order {
 
 	/**
 	 * Retrieves all the items from the menu
-	 * @returns {Array} returns an array containing all of the menu items in the database
+	 * @returns {Boolean} returns true upon success and false upon failure
 	 */
 	async add(data) {
 		const orderItems = JSON.stringify(data.orderContents)
 		if (data.total === 0) {
-			return false
+			return false // If not items added don't add to database
+		} else {
+			try {
+				const sql = `INSERT INTO orders(items, userid, price)
+						   VALUES('${orderItems}', ${data.userid}, ${data.total});`
+				await this.db.run(sql)
+				this.updateLast()
+				return true
+			} catch(err) {
+				console.log(err)
+				throw err
+			}
 		}
-		try {
-			const sql = `INSERT INTO orders(items, userid, price)\
-						VALUES('${orderItems}', ${data.userid}, ${data.total})`
-			await this.db.run(sql)
-			return true
-		} catch(err) {
-			console.log(err)
-			throw err
+	}
+	async updateLast() {
+		let sql = 'SELECT * FROM orders where id = (SELECT MAX(id) FROM orders);'
+		const userOrder = await this.db.all(sql) // Get the newly inserted record
+		const orderNumber = userOrder[0].id.toString().padStart(orderNumberLength, '0')
+		let itemNames = ''
+		for (const item of JSON.parse(userOrder[0].items)) {
+			itemNames += `${item.name}, `
 		}
+		itemNames = itemNames.slice(0, sliceLength)
+		sql = `UPDATE orders SET orderNumber = "${orderNumber}",
+			  itemNames = "${itemNames}" WHERE id = ${userOrder[0].id}`
+		await this.db.run(sql)
 	}
 	async getById(userid) {
-		const sql = `SELECT * FROM orders WHERE userid = ${userid} and completed = 0`
-		const order = await this.db.all(sql)
-		if (order.length === 0) {
+		const sql = `SELECT * FROM orders WHERE userid = ${userid} and completed = 0;`
+		const userOrder = await this.db.all(sql)
+		if (userOrder.length === 0) {
 			return false
 		} else {
-			return order
+			return userOrder
 		}
-		
-	}
-	async getByCategory(category) {
-		const sql = `SELECT * FROM menu WHERE category = "${category}"`
-		const items = await this.db.all(sql)
-		return items
 	}
 	async close() {
 		await this.db.close()

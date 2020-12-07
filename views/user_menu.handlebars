@@ -100,10 +100,11 @@
 		</div>
 	</div>	
 	<script>
-		var orderContents = []
-		var toSend = {}
-		function addToOrder (id, name, price) {
-			var order = document.getElementById('order-list')
+		let orderContents = []
+		let toSend = {}
+		
+		function addToOrder(id, name, price) {
+			let order = document.getElementById('order-list')
 			order.innerHTML += `<div id="div${id}">
 								<button type="button" id="remove-button" onclick='removeItem("div${id}", "${id}")'>Remove</button>
 								<li id="order-item">${name}, ${price}</li>
@@ -111,9 +112,9 @@
 			orderContents.push({id, name, price})
 		}
 		
-		function calculateTotal () {
-			var orderTotal = 0
-			for (var item of orderContents) {
+		function calculateTotal() {
+			let orderTotal = 0
+			for (let item of orderContents) {
 				orderTotal += item.price // Counting of price values to get the summation
 			}
 			document.getElementById('order-total-value').innerHTML = orderTotal.toFixed(2) // Convert to two decimal places due to currency
@@ -121,7 +122,7 @@
 		}
 		
 		function removeItem(item, id) {
-			for (var toRemove of orderContents) {
+			for (let toRemove of orderContents) {
 				if (toRemove.id === id) {
 					orderContents.splice(orderContents.indexOf(toRemove), 1) // Search for matching ID in array and remove first occurence
 					break
@@ -131,12 +132,13 @@
 			calculateTotal() // Update total price since item removed
 		}
 		
-		function passOrder () {
+		function passOrder() {
 			const total = parseFloat(calculateTotal())
 			toSend["total"] = total
 			toSend["orderContents"] = orderContents
 			document.getElementById("userorder").value += JSON.stringify(toSend) // Append string-JSON form of orderContents for POSTing on submission
 		}
+		
 	</script>
 	</body>
 </html>

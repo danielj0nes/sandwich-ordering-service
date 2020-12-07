@@ -18,14 +18,13 @@ async function checkAuth(ctx, next) {
 
 router.use(checkAuth)
 router.get('/', order)
-router.post('/', checkout)
+router.post('/', sendToCheckout)
 
 /**
- * Fetches order data using helper functions defined in the menu module
- * Checks whether the client is logged in as the owner or as a customer, renders seperate pages accordingly
+ * Fetches order data using helper functions defined in the orders module
  * @param {object} ctx - json object containing the request and associated headers
  */
-async function checkout(ctx) {
+async function sendToCheckout(ctx) {
 	const order = await new Order(dbName)
 	let data = ctx.request.body
 	try {

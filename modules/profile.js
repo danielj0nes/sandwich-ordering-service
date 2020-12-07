@@ -46,9 +46,9 @@ class Profile {
 	 */
 	async update(data, userid) {
 		try {
-			const sql = `UPDATE users SET firstName = "${data.firstName}",\
-						lastName = "${data.lastName}", company = "${data.company}",\
-						addressLine1 = "${data.addressLine1}", addressLine2 = "${data.addressLine2}",\
+			const sql = `UPDATE users SET firstName = "${data.firstName}",
+						lastName = "${data.lastName}", company = "${data.company}",
+						addressLine1 = "${data.addressLine1}", addressLine2 = "${data.addressLine2}",
 						city = "${data.city}", postcode = "${data.postcode}" WHERE id = ${userid};`
 			await this.db.run(sql)
 			return true
