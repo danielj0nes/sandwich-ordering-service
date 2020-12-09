@@ -1,5 +1,6 @@
 /**
- * The purpose of this file is to handle logging in and registering functionality
+ * This file handles the logging in and registering functionality
+ * It also handles CRUD operations regarding the user profile, such as returning additional user info
  * @module modules/accounts
  * @author Mark Tyers + Daniel Jones
  */
@@ -11,7 +12,8 @@ const saltRounds = 10
 
 /**
  * Accounts
- * ES6 module that handles registering accounts and logging in.
+ * ES6 module that handles registering accounts and logging in
+ * The module also handles an assortment of CRUD operations associated with the users table
  */
 class Accounts {
 	/**
@@ -71,7 +73,32 @@ class Accounts {
 		if(valid === false) throw new Error(`invalid password for account "${username}"`)
 		return record.id
 	}
-
+	/**
+	 * Returns the relevant data from the users table queried by the user id
+	 * @params {Integer} userid - the id of a user
+	 * @returns {Object} returns a JSON object containing the headers and values pertaining to the given user ID
+	 */
+	async getById(userid) {
+		const sql = `SELECT * FROM users WHERE id = ${userid};`
+		const profile = await this.db.all(sql)
+		if (profile.length === 0) throw new Error(`No record found for id "${userid}"`)
+		else return profile
+	}
+	/**
+	 * Update profile related user data by the id of the user
+	 * @params {Object} data - json object (request body)
+	 * @params {Integer} userid - the id of a user
+	 * @returns {Boolean} returns true upon success
+	 */
+	async update(data, userid) {
+		if (typeof data !== 'object' || data === null) throw new Error('Invalid data sent, must be valid JSON')
+		const sql = `UPDATE users SET firstName = "${data.firstName}",
+					lastName = "${data.lastName}", company = "${data.company}",
+					addressLine1 = "${data.addressLine1}", addressLine2 = "${data.addressLine2}",
+					city = "${data.city}", postcode = "${data.postcode}" WHERE id = ${userid};`
+		await this.db.run(sql)
+		return true
+	}
 	async close() {
 		await this.db.close()
 	}

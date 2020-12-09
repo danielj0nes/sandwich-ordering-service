@@ -270,7 +270,7 @@ table img {
 td, th {
 	/* border: 1px solid grey; */
 	padding: 0.5vw;
-	font-size: 1vw;
+	font-size: 13px;
 	text-align: left;
 }
 
@@ -416,4 +416,8 @@ a:link{
 	height: 20px;
 	font-size: 10px;
 	
+}
+#owner-orders {
+	float: left;
+	position: absolute;
 }

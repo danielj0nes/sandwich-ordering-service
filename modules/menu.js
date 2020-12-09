@@ -47,7 +47,6 @@ class Menu {
 	 * @return {Object} returns a JSON object containing all of the menu items and their headers from the database
 	 */
 	async add(data) {
-		console.log(data)
 		let filename
 		if(data.fileName) {
 			filename = `${Date.now()}.${mime.extension(data.fileType)}` // Millisecond timestamp
@@ -59,7 +58,6 @@ class Menu {
 			await this.db.run(sql)
 			return true
 		} catch(err) {
-			console.log(err)
 			throw err
 		}
 	}
@@ -78,9 +76,14 @@ class Menu {
 	 * @return {Object} - returns a JSON object containing all of the categories
 	 */
 	async getByCategory(category) {
-		const sql = `SELECT * FROM menu WHERE category = "${category}"`
-		const items = await this.db.all(sql)
-		return items
+		try {
+			const sql = `SELECT * FROM menu WHERE category = "${category}"`
+			const items = await this.db.all(sql)
+			if (items.length === 0) throw new Error(`No result returned for category "${category}"`)
+			return items
+		} catch(err) {
+			throw err
+		}
 	}
 	async close() {
 		await this.db.close()

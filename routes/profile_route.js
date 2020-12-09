@@ -4,7 +4,7 @@
  * @author Daniel Jones
  */
 import Router from 'koa-router'
-import Profile from '../modules/profile.js'
+import Accounts from '../modules/accounts.js'
 
 const router = new Router({ prefix: '/profile' })
 const dbName = 'website.db'
@@ -17,14 +17,14 @@ async function checkAuth(ctx, next) {
 
 router.use(checkAuth)
 router.get('/', viewProfile)
-router.get('/', updateProfile)
+router.post('/', updateProfile)
 
 /**
  * Fetches the logged in user's profile data upon GET request using helper functions defined in the profile module
  * @param {Object} ctx - json object containing the request and associated headers
  */
 async function viewProfile(ctx) {
-	const profile = await new Profile(dbName)
+	const profile = await new Accounts(dbName)
 	try {
 		const records = await profile.getById(ctx.session.userid)
 		ctx.hbs.records = records
@@ -41,9 +41,8 @@ async function viewProfile(ctx) {
  * @return {Object} Returns a redirect object notifying the user that the profile has been updated
  */
 async function updateProfile(ctx) {
-	const profile = await new Profile(dbName)
+	const profile = await new Accounts(dbName)
 	try {
-		console.log(ctx.request.body)
 		ctx.request.body.account = ctx.session.userid
 		await profile.update(ctx.request.body, ctx.session.userid)
 		return ctx.redirect('/profile?msg=Profile updated')

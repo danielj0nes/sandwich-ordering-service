@@ -6,6 +6,7 @@
 import Router from 'koa-router'
 import Menu from '../modules/menu.js'
 
+
 const prefix = '/menu'
 const router = new Router({ prefix: prefix })
 const dbName = 'website.db'
@@ -13,7 +14,7 @@ const ownerId = 4
 /**
  * @const {integer} - The hour at which the menu becomes available to the customer
  */
-const openingTime = 100 // Change this to 11
+const userOpeningTime = 111 // Change this to 11 for complete stage1-part2 functionality
 
 async function checkAuth(ctx, next) {
 	console.log(ctx.hbs)
@@ -28,7 +29,7 @@ router.post('/edit', updateMenu)
 
 /**
  * Fetches menu data using helper functions defined in the menu module
- * Checks the current time against the openingTime variable to ensure that orders cannot be placed after a certain time
+ * Checks the current time against the userOpeningTime variable;ensure that orders cannot be placed after a certain time
  * @param {Object} ctx - JSON object containing the request and associated headers
  */
 async function getMenu(ctx) {
@@ -42,8 +43,11 @@ async function getMenu(ctx) {
 		ctx.hbs.snacks = snacks
 		ctx.hbs.drinks = drinks
 		const currentHours = new Date().getHours()
-		if(currentHours < openingTime) await ctx.render('user_menu', ctx.hbs)
-		else await ctx.render('error', ctx.hbs)
+		if(currentHours < userOpeningTime) await ctx.render('user_menu', ctx.hbs)
+		else {
+			await ctx.render('error', ctx.hbs)
+			console.log('It is past 11AM - try again tomorrow, before 11AM')
+		}
 	} catch(err) {
 		await ctx.render('error', ctx.hbs)
 	}

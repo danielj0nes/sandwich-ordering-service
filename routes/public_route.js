@@ -9,7 +9,7 @@ import Accounts from '../modules/accounts.js'
 
 const router = new Router()
 const dbName = 'website.db'
-
+const ownerId = 4
 /**
  * The Sandwich Ordering Service home page.
  * @name Home Page
@@ -80,10 +80,11 @@ router.post('/login', async ctx => {
 		ctx.session.authorised = true
 		ctx.session.user = body.user
 		ctx.session.userid = id
-		const referrer = body.referrer || '/menu'
+		let referrer = body.referrer
+		if (ctx.session.userid === ownerId) referrer = body.referrer || '/orders'
+		else referrer = body.referrer || '/menu'
 		return ctx.redirect(`${referrer}?msg=you are now logged in...`)
 	} catch(err) {
-		console.log(err)
 		ctx.hbs.msg = err.message
 		await ctx.render('login', ctx.hbs)
 	} finally {
