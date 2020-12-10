@@ -10,7 +10,7 @@ const prefix = '/orders'
 const router = new Router({ prefix: prefix })
 const dbName = 'website.db'
 const ownerId = 4
-const ownerOrderTime = 11 // Change this to 11 for complete stage1-part3 functionality
+const ownerOrderTime = -11 // Change this to 11 for complete stage1-part3 functionality
 
 async function checkAuth(ctx, next) {
 	console.log(ctx.hbs)
@@ -54,9 +54,12 @@ async function checkOrder(ctx) {
 		const currentHours = new Date().getHours()
 		if (currentHours > ownerOrderTime) {
 			ctx.hbs.orders = await order.getAll()
-			console.log('It is before 11AM - come back past 11.')
+			ctx.hbs.itemcount = await order.getCount()
 			await ctx.render('owner_orders', ctx.hbs)
-		} else await ctx.render('error', ctx.hbs)
+		} else {
+			console.log('It is before 11AM - come back past 11.')
+			await ctx.render('error', ctx.hbs)
+		}
 	} else {
 		ctx.hbs.order = await order.getById(ctx.session.userid)
 		await ctx.render('user_orders', ctx.hbs)

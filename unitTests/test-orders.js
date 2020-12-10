@@ -223,3 +223,49 @@ test('GETBYID : error when querying bad type', async test => {
 		order.close()
 	}
 })
+
+test('GETCOUNT : return expected count', async test => {
+	test.plan(1)
+	const order = await new Order()
+	const expected = 4
+	const order1 = {total: 20,
+				   orderContents: [
+					   { id: '1', name: 'Bacon Sandwich', price: 5 },
+					   { id: '2', name: 'BLT', price: 5 },
+					   { id: '1', name: 'Bacon Sandwich', price: 5 },
+					   { id: '3', name: 'Tuna Mayonnaise', price: 5 }
+				   ],
+				   userid: 1}
+	const order2 = {total: 10,
+				   orderContents: [
+					   { id: '1', name: 'Bacon Sandwich', price: 5 },
+					   { id: '1', name: 'Bacon Sandwich', price: 5 }
+				   ],
+				   userid: 2}
+	try {
+		await order.addToCheckout(order1)
+		await order.addToCheckout(order2)
+		await order.processOrder({id: 1, status: true})
+		await order.processOrder({id: 2, status: true})
+		const result = await order.getCount()
+		test.is(result['Bacon Sandwich'], expected, `Expected ${expected}, got ${result['Bacon Sandwich']}`)
+	} catch(err) {
+		test.fail(`Error occured during testing ${err}`)
+	} finally {
+		order.close()
+	}
+})
+
+test('GETCOUNT : attempt to count with no data', async test => {
+	test.plan(1)
+	const order = await new Order()
+	const expected = false
+	try {
+		const result = await order.getCount()
+		test.is(result, expected, `Expected ${expected}, got ${result}`)
+	} catch(err) {
+		test.fail(`Error occured during testing ${err}`)
+	} finally {
+		order.close()
+	}
+})

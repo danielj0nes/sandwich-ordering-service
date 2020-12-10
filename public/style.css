@@ -420,4 +420,9 @@ a:link{
 #owner-orders {
 	float: left;
 	position: absolute;
+	
+}
+
+#item-counts {
+	float: right;
 }

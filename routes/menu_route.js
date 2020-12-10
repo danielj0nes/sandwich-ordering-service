@@ -14,7 +14,7 @@ const ownerId = 4
 /**
  * @const {integer} - The hour at which the menu becomes available to the customer
  */
-const userOpeningTime = 11 // Change this to 11 for complete stage1-part2 functionality
+const userOpeningTime = 111 // Change this to 11 for complete stage1-part2 functionality
 
 async function checkAuth(ctx, next) {
 	console.log(ctx.hbs)

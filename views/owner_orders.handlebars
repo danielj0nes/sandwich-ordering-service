@@ -53,9 +53,29 @@
 					<td>£{{this.price}}</td>
 					<td>{{this.itemNames}}</td>
 					<td>{{this.completed}}</td>
+					<td>
+						<form method="post" action="/orders/{{this.orderid}}" enctype="multipart/form-data">
+							<input hidden type="text" id="orderinstruction{{this.id}}"/>
+							<input id="delivered" type="submit" value="Delivered" onclick=''>
+							<input id="goto" type="submit" value="Details" onclick=''>
+						</form>
+					</td>
 				</tr>
+					
 				{{/each}}
 				</tbody>
+			</table>
+		</div>
+		<div id="item-counts">
+			<table id="pick-list">
+				<p>Pick list</p>
+				<tr><th>Order item</th><th>Amount required to complete</th></tr>
+				{{#each itemcount}}
+				<tr>
+					<td>{{@key}}</td>
+					<td>{{this}}</td>
+				</tr>
+				{{/each}}
 			</table>
 		</div>
 		{{#if msg}}
