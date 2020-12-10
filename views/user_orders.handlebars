@@ -4,40 +4,35 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Checkout for customers</title>
+		<title>Order status and history for users</title>
 		<meta name="description" content="Sandwich Ordering Service - Checkout - Customer">
 		<meta name="author" content="Daniel Jones">
 		<link href="{{host}}/style.css" type="text/css" rel="stylesheet" />
 		<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 		<script type="module" src="{{host}}/main.js"></script>
 	</head>
-	<body>
+	<body onload='convertStatus()'>
 		<header>
-		<h1>Checkout</h1>
+		<h1>Orders</h1>
 		<div class="dropdown">
 			<button class="dropbtn"><i class='fas fa-user-alt' style='font-size:16px'></i> {{this.user}}</button>
 			<div class="dropdown-content">
 				<a href="/profile">Profile</a>
 				<a href="/menu">Menu</a>
-				<a href="/orders">Order status + history</a>
+				<a href="/checkout">Checkout</a>
 				<a href="/logout">Log Out</a>
 			</div>
 		</div>
 		</header>
 		<main>
-			<table>
-				<tr><th>Price</th><th>Items</th></tr>
+			<table id="orders">
+				<tr><th>Order Number</th><th>Price</th><th>Items</th><th>Status</th></tr>
 				{{#each order}}
 				<tr>
+					<td>{{this.orderNumber}}</td>
 					<td>£{{this.price}}</td>
 					<td>{{this.itemNames}}</td>
-					<td>
-						<form method="post" action="/orders" enctype="multipart/form-data">
-						<input hidden type="text" id="orderinstruction{{this.id}}" name="orderinstruction"/>
-						<input id="confirm-order" type="submit" value="Confirm Order" onclick='handleInstruction({{this.id}}, true)'>
-					    <input id="remove-order" type="submit" value="Remove" onclick='handleInstruction({{this.id}}, false)'>
-						</form>
-					</td>
+					<td>{{this.completed}}</td>
 					
 				</tr>
 				{{/each}}
@@ -48,14 +43,5 @@
 				<p class="msg">{{msg}}</p>
 			</aside>
 		{{/if}}
-	<script>
-	
-	function handleInstruction(id, status) {
-		let data = {}
-		data['id'] = id
-		data['status'] = status
-		document.getElementById(`orderinstruction${id}`).value += JSON.stringify(data)	
-	}
-	</script>
 	</body>
 </html>

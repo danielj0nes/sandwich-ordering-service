@@ -5,6 +5,7 @@
  */
 import Router from 'koa-router'
 import Order from '../modules/orders.js'
+import Accounts from '../modules/accounts.js'
 
 const prefix = '/checkout'
 const router = new Router({ prefix: prefix })
@@ -30,7 +31,7 @@ async function sendToCheckout(ctx) {
 	try {
 		data = JSON.parse(data.userorder)
 		data['userid'] = ctx.session.userid
-		await order.add(data)
+		await order.addToCheckout(data)
 		return ctx.redirect('/checkout')
 	} catch(err) {
 		console.log(err)
@@ -38,14 +39,35 @@ async function sendToCheckout(ctx) {
 		order.close()
 	}
 }
-
+/**
+ * Checks that the currently logged in user has contact information available prior to placing an order
+ * @param {Object} ctx - JSON object containing the request and associated headers
+ * @return {Boolean} true upon valid / existing address false if not
+ */
+async function checkAddress(ctx) {
+	const profile = await new Accounts(dbName)
+	const userProfile = await profile.getById(ctx.session.userid)
+	for (const [key, detail] of Object.entries(userProfile[0])) {
+		if (key !== 'addressLine2' && (detail === null || detail === '')) {
+			return false
+		}
+	}
+	return true
+}
+/**
+ * Fetches menu data using helper functions defined in the menu module
+ * Checks the current time against the openingTime variable to ensure that orders cannot be placed after a certain time
+ * @param {Object} ctx - JSON object containing the request and associated headers
+ */
 async function order(ctx) {
 	const order = await new Order(dbName)
 	try {
-		const userOrder = await order.getById(ctx.session.userid)
-		if (userOrder === false) {
-			return ctx.redirect('/menu?msg=you need to add items to your order before checking out&referrer=/checkout')
-		} else {
+		if (!await checkAddress(ctx)) return ctx.redirect('/menu?msg=you need to add contact information\
+														  via the profile page&referrer=/checkout')
+		const userOrder = await order.getCheckout(ctx.session.userid)
+		if (!userOrder) return ctx.redirect('/menu?msg=you need to add items to your order\
+											before checking out&referrer=/checkout')
+		else {
 			ctx.hbs.order = userOrder
 			await ctx.render('checkout', ctx.hbs)
 		}

@@ -6,11 +6,15 @@
 import Router from 'koa-router'
 import Menu from '../modules/menu.js'
 
+
 const prefix = '/menu'
 const router = new Router({ prefix: prefix })
 const dbName = 'website.db'
 const ownerId = 4
-const openingTime = 100
+/**
+ * @const {integer} - The hour at which the menu becomes available to the customer
+ */
+const userOpeningTime = 11 // Change this to 11 for complete stage1-part2 functionality
 
 async function checkAuth(ctx, next) {
 	console.log(ctx.hbs)
@@ -25,8 +29,8 @@ router.post('/edit', updateMenu)
 
 /**
  * Fetches menu data using helper functions defined in the menu module
- * Checks whether the client is logged in as the owner or as a customer, renders seperate pages accordingly
- * @param {object} ctx - json object containing the request and associated headers
+ * Checks the current time against the userOpeningTime variable;ensure that orders cannot be placed after a certain time
+ * @param {Object} ctx - JSON object containing the request and associated headers
  */
 async function getMenu(ctx) {
 	const menu = await new Menu(dbName)
@@ -38,11 +42,11 @@ async function getMenu(ctx) {
 		ctx.hbs.sandwiches = sandwiches
 		ctx.hbs.snacks = snacks
 		ctx.hbs.drinks = drinks
-		if(ctx.session.userid === ownerId) await ctx.render('owner_menu', ctx.hbs)
+		const currentHours = new Date().getHours()
+		if(currentHours < userOpeningTime) await ctx.render('user_menu', ctx.hbs)
 		else {
-			const currentHours = new Date().getHours()
-			if(currentHours < openingTime) await ctx.render('user_menu', ctx.hbs)
-			else await ctx.render('error', ctx.hbs)
+			await ctx.render('error', ctx.hbs)
+			console.log('It is past 11AM - try again tomorrow, before 11AM')
 		}
 	} catch(err) {
 		await ctx.render('error', ctx.hbs)
@@ -51,7 +55,7 @@ async function getMenu(ctx) {
 /**
  * Renders the edit menu page providing the owner is the one logged in
  * Passes over the menu categories so that one can be selected when adding a new item to the menu
- * @param {object} ctx - json object containing the request and associated headers
+ * @param {object} ctx - JSON object containing the request and associated headers
  */
 async function editMenu(ctx) {
 	const menu = await new Menu(dbName)
@@ -64,8 +68,9 @@ async function editMenu(ctx) {
 	}
 }
 /**
- * Handle the posting of data from the edit menu page
- * @param {object} ctx - json object containing the request and associated headers
+ * Handle adding a new item to the menu via a POST request on the menu/edit page
+ * @param {Object} ctx - JSON object containing the request and associated headers
+ * @return {Object} returns a redirect object notifying the user that the item has been added
  */
 async function updateMenu(ctx) {
 	const menu = await new Menu(dbName)
@@ -77,7 +82,7 @@ async function updateMenu(ctx) {
 			ctx.request.body.fileType = ctx.request.files.picture.type
 		}
 		await menu.add(ctx.request.body)
-		return ctx.redirect('/menu?msg=new item added')
+		return ctx.redirect('/menu/edit?msg=new item added')
 	} catch(err) {
 		console.log(err)
 		await ctx.render('error', ctx.hbs)
@@ -85,5 +90,5 @@ async function updateMenu(ctx) {
 		menu.close()
 	}
 }
-/** Export the router (which includes the associated methods) for use in routes.js */
+/* Export the router (which includes the associated methods) for use in routes.js */
 export default router
