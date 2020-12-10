@@ -10,7 +10,7 @@ const prefix = '/orders'
 const router = new Router({ prefix: prefix })
 const dbName = 'website.db'
 const ownerId = 4
-const ownerOrderTime = -11 // Change this to 11 for complete stage1-part3 functionality
+const ownerOrderTime = 11 // Change this to 11 for complete stage1-part3 functionality
 
 async function checkAuth(ctx, next) {
 	console.log(ctx.hbs)

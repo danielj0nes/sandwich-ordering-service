@@ -13,24 +13,9 @@ The following accounts in conjunction with the password `p455w0rd` allow the sys
 
 * Stage 1 part 1 - Customers can login and set up a profile
 * Stage 1 part 2 - Customers can add items to their order and checkout
+* Stage 1 part 3 - The owner can see a list of items past 11AM grouped by postcode for each customer
 
 ## To do
-
-
-### Part 2
-
-2. When a `customer` logs in before 11:00 they can pick from a range of sandwiches, crisps and drinks and add them to their lunch order for the day. When the order is complete they are given a 10 character order number.
-
-### Part 3
-
-When the `owner` logs in after 11:00 they can see a list of the items ordered grouped by postcode and including for each customer:
-
-1. The `customer` name.
-2. The name of the company.
-3. The address of the company.
-4. The 10 character order number.
-
----
 
 ## Stage 2
 

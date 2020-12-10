@@ -21,15 +21,16 @@ class Order {
 		return (async() => {
 			this.db = await sqlite.open(dbName)
 			let sql = 'CREATE TABLE IF NOT EXISTS orders(\
-						id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER NOT NULL,\
-						items TEXT NOT NULL, price INTEGER NOT NULL,\
-						completed INTEGER NOT NULL DEFAULT 0,\
-						FOREIGN KEY (userid) REFERENCES users(id)\);'
+					  id INTEGER PRIMARY KEY AUTOINCREMENT,\
+					  userid INTEGER NOT NULL, items TEXT NOT NULL,\
+					  price INTEGER NOT NULL, completed TEXT NOT NULL DEFAULT "In progress",\
+					  orderNumber TEXT, itemNames TEXT,\
+					  FOREIGN KEY (userid) REFERENCES users(id));'
 			await this.db.run(sql)
 			sql = 'CREATE TABLE IF NOT EXISTS checkout(\
 				  id INTEGER PRIMARY KEY AUTOINCREMENT, userid INTEGER NOT NULL,\
 				  items TEXT NOT NULL, price INTEGER NOT NULL,\
-				  itemNames TEXT, FOREIGN KEY (userid) REFERENCES users(id)\);'
+				  itemNames TEXT, FOREIGN KEY (userid) REFERENCES users(id));'
 			await this.db.run(sql)
 			return this
 		})()
@@ -114,11 +115,11 @@ class Order {
 	 */
 	async getById(userid) {
 		const sql = `SELECT * FROM orders WHERE userid = ${userid}`
-		const userCheckout = await this.db.all(sql)
-		if (userCheckout.length === 0) {
+		const userOrder = await this.db.all(sql)
+		if (userOrder.length === 0) {
 			return false
 		} else {
-			return userCheckout
+			return userOrder
 		}
 	}
 	/**
@@ -129,7 +130,8 @@ class Order {
 	async getAll() {
 		const sql = 'SELECT * FROM orders LEFT JOIN users ON users.id = orders.userid ORDER BY postcode'
 		const allOrders = await this.db.all(sql)
-		return allOrders
+		if (allOrders.length === 0) return false
+		else return allOrders
 	}
 	async close() {
 		await this.db.close()
