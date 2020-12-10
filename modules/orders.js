@@ -116,11 +116,8 @@ class Order {
 	async getById(userid) {
 		const sql = `SELECT * FROM orders WHERE userid = ${userid}`
 		const userOrder = await this.db.all(sql)
-		if (userOrder.length === 0) {
-			return false
-		} else {
-			return userOrder
-		}
+		if (userOrder.length === 0) return false
+		else return userOrder
 	}
 	/**
 	 * Returns all orders and information associated with the user that placed the order
@@ -128,10 +125,30 @@ class Order {
 	 * @return {Object} allOrders - Return all records retrieved from the orders table in JSON format
 	 */
 	async getAll() {
-		const sql = 'SELECT * FROM orders LEFT JOIN users ON users.id = orders.userid ORDER BY postcode'
+		const sql = 'SELECT orders.id as orderid, * FROM orders\
+					INNER JOIN users ON users.id = orders.userid ORDER BY postcode;'
 		const allOrders = await this.db.all(sql)
 		if (allOrders.length === 0) return false
 		else return allOrders
+	}
+	/**
+	 * Selects all orders and iterates through them, appending item names to item list
+	 * Counts each unique occurence and creates a key-value frequency object with items as keys, frequencies as values
+	 * @return {Object} Return key-value object (key = item id, value = frequency)
+	 */
+	async getCount() {
+		const items = []
+		const sql = 'SELECT * FROM orders'
+		const allOrders = await this.db.all(sql)
+		if (allOrders.length === 0) return false
+		else {
+			for (const order of allOrders) {
+				for (const item of JSON.parse(order.items)) {
+					items.push(item.name)
+				}
+			}
+			return items.reduce((prev, curr) => (prev[curr] = ++prev[curr] || 1, prev), {})
+		}
 	}
 	async close() {
 		await this.db.close()
