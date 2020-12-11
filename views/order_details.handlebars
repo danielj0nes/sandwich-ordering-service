@@ -19,20 +19,20 @@
 			<div class="dropdown-content">
 				<a href="/profile">Profile</a>
 				<a href="/menu">Menu</a>
-				<a href="/checkout">Checkout</a>
+				<a href="/orders">Orders</a>
 				<a href="/logout">Log Out</a>
 			</div>
 		</div>
 		</header>
 		<main>
 			<table id="orders">
-				<tr><th>Order Number</th><th>Items</th><th>Total</th><th>Status</th></tr>
+				<tr><th>Order Number</th><th>Items</th><th>Total</th><th>Status</th><th>QR Code</th></tr>
 					<tr>
 						<td>{{orderdetails.orderNumber}}</td>
 						<td>{{orderdetails.itemPrices}}</td>
-						<td>{{orderdetails.price}}</td>
-						<td>{{orderdetails.completed}}</td>
-						<td><img src="{{orderdetails.qrcode}}"/></td>
+						<td>£{{orderdetails.price}}</td>
+						<td>{{orderdetails.status}}</td>
+						<td><img src="../qrcodes/{{orderdetails.qrcode}}"/></td>
 					</tr>
 			</table>
 		</main>

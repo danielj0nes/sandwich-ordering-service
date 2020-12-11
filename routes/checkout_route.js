@@ -34,7 +34,8 @@ async function sendToCheckout(ctx) {
 		await order.addToCheckout(data)
 		return ctx.redirect('/checkout')
 	} catch(err) {
-		console.log(err)
+		ctx.hbs.errormessage = `An error has occured - ${err.message}`
+		await ctx.render('error', ctx.hbs)
 	} finally {
 		order.close()
 	}
@@ -42,13 +43,13 @@ async function sendToCheckout(ctx) {
 /**
  * Checks that the currently logged in user has contact information available prior to placing an order
  * @param {Object} ctx - JSON object containing the request and associated headers
- * @return {Boolean} true upon valid / existing address false if not
+ * @return {Boolean} true upon valid or existing address, false if not
  */
 async function checkAddress(ctx) {
 	const profile = await new Accounts(dbName)
 	const userProfile = await profile.getById(ctx.session.userid)
 	for (const [key, detail] of Object.entries(userProfile[0])) {
-		if (key !== 'addressLine2' && (detail === null || detail === '')) {
+		if (key !== 'addressLine2' && (detail === null || detail === '')) { // Since address line 2 is optional, ignore
 			return false
 		}
 	}
@@ -72,7 +73,8 @@ async function order(ctx) {
 			await ctx.render('checkout', ctx.hbs)
 		}
 	} catch(err) {
-		console.log(err)
+		ctx.hbs.errormessage = `An error has occured - ${err.message}`
+		await ctx.render('error', ctx.hbs)
 	} finally {
 		order.close()
 	}

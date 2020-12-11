@@ -12,9 +12,9 @@ const router = new Router({ prefix: prefix })
 const dbName = 'website.db'
 const ownerId = 4
 /**
- * @const {integer} - The hour at which the menu becomes available to the customer
+ * @const {integer} userOpeningTime - The hour at which the menu becomes available to the customer
  */
-const userOpeningTime = 111 // Change this to 11 for complete stage1-part2 functionality
+const userOpeningTime = 11 // Change this to 11 for complete stage1-part2 functionality
 
 async function checkAuth(ctx, next) {
 	console.log(ctx.hbs)
@@ -35,18 +35,15 @@ router.post('/edit', updateMenu)
 async function getMenu(ctx) {
 	const menu = await new Menu(dbName)
 	try {
-		const components = {categories: await menu.getCategories(), sandwiches: await menu.getByCategory('Sandwich'),
-						   snacks: await menu.getByCategory('Snack'), drinks: await menu.getByCategory('Drink')}
-		const {categories, sandwiches, snacks, drinks} = components
-		ctx.hbs.categories = categories
-		ctx.hbs.sandwiches = sandwiches
-		ctx.hbs.snacks = snacks
-		ctx.hbs.drinks = drinks
+		ctx.hbs.categories = await menu.getCategories()
+		ctx.hbs.sandwiches = await menu.getByCategory('Sandwich')
+		ctx.hbs.snacks = await menu.getByCategory('Snack')
+		ctx.hbs.drinks = await menu.getByCategory('Drink')
 		const currentHours = new Date().getHours()
-		if(currentHours < userOpeningTime) await ctx.render('user_menu', ctx.hbs)
+		if(currentHours < userOpeningTime) await ctx.render('user_menu', ctx.hbs) // If it's before 11, user can order
 		else {
+			ctx.hbs.errormessage = 'It is past 11:00 AM - please try again tomorrow before 11:00 AM'
 			await ctx.render('error', ctx.hbs)
-			console.log('It is past 11AM - try again tomorrow, before 11AM')
 		}
 	} catch(err) {
 		await ctx.render('error', ctx.hbs)
@@ -64,6 +61,7 @@ async function editMenu(ctx) {
 		ctx.hbs.categories = categories
 		await ctx.render('editmenu', ctx.hbs)
 	} else {
+		ctx.hbs.errormessage = 'You are not able to edit the menu'
 		await ctx.render('error', ctx.hbs)
 	}
 }
@@ -84,7 +82,7 @@ async function updateMenu(ctx) {
 		await menu.add(ctx.request.body)
 		return ctx.redirect('/menu/edit?msg=new item added')
 	} catch(err) {
-		console.log(err)
+		ctx.hbs.errormessage = `An error has occured - ${err.message}`
 		await ctx.render('error', ctx.hbs)
 	} finally {
 		menu.close()

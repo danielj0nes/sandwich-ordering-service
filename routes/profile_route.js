@@ -30,8 +30,7 @@ async function viewProfile(ctx) {
 		ctx.hbs.records = records
 		await ctx.render('profile', ctx.hbs)
 	} catch(err) {
-		console.log(err)
-		ctx.hbs.error = err.message
+		ctx.hbs.errormessage = `An error has occured - ${err.message}`
 		await ctx.render('error', ctx.hbs)
 	}
 }
@@ -47,7 +46,7 @@ async function updateProfile(ctx) {
 		await profile.update(ctx.request.body, ctx.session.userid)
 		return ctx.redirect('/profile?msg=Profile updated')
 	} catch(err) {
-		console.log(err)
+		ctx.hbs.errormessage = `An error has occured - ${err.message}`
 		await ctx.render('error', ctx.hbs)
 	} finally {
 		profile.close()

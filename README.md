@@ -9,25 +9,29 @@ The following accounts in conjunction with the password `p455w0rd` allow the sys
 
 ---
 
-## Completed
+## Docs
+Complete JSDocs have been configred in the codio project under the 'docs/' directory.
+
+---
+
+## Completed functionality (all stages and parts)
 
 * Stage 1 part 1 - Customers can login and set up a profile
+![Stage 1 Part 1 Image](https://i.imgur.com/wlCZgco.png)
+
 * Stage 1 part 2 - Customers can add items to their order and checkout
+![Stage 1 Part 2 Image](https://i.imgur.com/tzgT8qQ.png)
+
 * Stage 1 part 3 - The owner can see a list of items past 11AM grouped by postcode for each customer
+![Stage 1 Part 3 Image](https://i.imgur.com/UL0biff.png)
 
-## To do
+* Stage 2 part 1 - The owner can see an overall pick list for each product which shows how many are required to complete the daily order
+![Stage 2 Part 1 Image](https://i.imgur.com/O4SCcmG.png)
 
-## Stage 2
+* Stage 2 part 2 - When the customer places and order they receive email confirmation
+![Stage 2 Part 2 Image](https://i.imgur.com/xFR9Ukc.png)
 
-This builds on the work you have already completed and adds additional functionality.
+* Stage 2 part 3 - When the owner views the list of deliveries they can mark it delivered or go to the order details
+![Stage 2 Part 3 Image](https://i.imgur.com/KkkDR89.png)
 
-1. When the `owner` sees the daily orders they can see an overall pick list for each product showing how many are needed to complete the daily order.
-2. When the `customer` places their order they receive an email confirmation that includes:
-    1. A list of the items ordered including individual item prices.
-    2. A total price.
-    3. The 10 character order number.
-    4. A QR Code of this 10 character order number.
-3. The `owner` sees the list of deliveries and next to each delivery there is:
-    1. The 10 character order number.
-    2. A button labelled **Delivered** which is clicked to flag that the items were delivered to the customer.
-    3. A button to go to a screen that displays the order details including the QR code representing the 10 character order number.
+---

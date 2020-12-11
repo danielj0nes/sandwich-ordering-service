@@ -62,7 +62,7 @@ class Menu {
 		}
 	}
 	/**
-	 * Returns a list of categories from the menu table in the databse
+	 * Returns a list of distinct categories from the menu table in the databse
 	 * @return {Object} - returns a JSON object containing all of the categories
 	 */
 	async getCategories() {

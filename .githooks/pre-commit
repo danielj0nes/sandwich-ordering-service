@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Daniel Jones - 7929997 - Sandwich Ordering Service 
+
 set -e # using the options command to abort script at first error
 echo
 echo "PRE-COMMIT HOOK TRIGGERED"
@@ -22,7 +24,7 @@ else
 	exit 0
 fi
 
-# see if the user is trying to merge a branch into master
+# check for master branch merging
 branch="$(git rev-parse --abbrev-ref HEAD)"
 if [[ $2 == 'merge' ]]; then
 	echo "merging branch"
@@ -35,7 +37,7 @@ if [[ $2 == 'merge' ]]; then
 	fi
 fi
 
-# see if the user is trying to commit to the master branch
+# check for master branch commit
 if [ "$branch" = "master" ]; then
 	read -p "  You are about to commit to the master branch, are you sure? [y|n] " -n 1 -r < /dev/tty
 	echo
@@ -47,35 +49,3 @@ if [ "$branch" = "master" ]; then
 fi
 
 echo "Commit successful :-)"
-
-
-
-# is the current branch a direct child of the master branch?
-# echo "checking parent branch"
-# PARENT=$(git show-branch -a | grep -v `git rev-parse --abbrev-ref HEAD` | grep -v origin | sed 's/.*\[\(.*\)\].*/\1/' | grep -v -e '^$' | grep -v "^----$"
-# echo "parent branch is $PARENT")
-
-# see if the user is trying to commit to the master branch
-# echo "  you are trying to commit to the '$branch' branch"
-# if [ "$branch" = "master" ]; then
-#   echo "    you can't commit directly to the master branch"
-#   echo "    create a local feature branch first"
-#   echo
-#   exit 1
-# fi
-
-# check for valid branch name:
-
-# valid_branch_regex="^iss\d{3}\/[a-z\-]+$"
-
-# if [[ ! $local_branch =~ $valid_branch_regex ]]
-# then
-#     echo "invalid branch name"
-#     echo "  format is: 'iss000/issue-name'"
-#     echo "  replacing '000' with the issue number and 'issue-name' with the issue name"
-#     echo "  only lower-case letters and replace spaces in the issue name with dashes"
-#     echo "  rename your branch and try again"
-#     exit 1
-# fi
-
-
