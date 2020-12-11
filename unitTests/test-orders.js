@@ -181,8 +181,8 @@ test('PROCESSORDER : check QR codes created', async test => {
 	test.plan(2)
 	const order = await new Order()
 	/* Since the previous processOrder tests should create some QRCodes, check for these */
-	const path1 = 'orders/qrcodes/0000000001.png'
-	const path2 = 'orders/qrcodes/0000000002.png'
+	const path1 = 'public/qrcodes/0000000001.png'
+	const path2 = 'public/qrcodes/0000000002.png'
 	try {
 		let result = fs.existsSync(path1)
 		test.is(result, true, `Expected true, got ${result}`)
@@ -197,8 +197,8 @@ test('PROCESSORDER : check QR codes created', async test => {
 	}
 })
 
-/* Since processOrder calls the helper updateOrder function, we test it's functionality through this */
-test('UPDATEORDER : check order number created correctly', async test => {
+/* Since processOrder calls the helper updateLast function, we test it's functionality through this */
+test('UPDATELAST : check order number created correctly', async test => {
 	test.plan(1)
 	const order = await new Order()
 	const expectedNumber = '0000000001'

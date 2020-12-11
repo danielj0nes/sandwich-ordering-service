@@ -23,8 +23,10 @@ async function checkAuth(ctx, next) {
 
 router.use(checkAuth)
 router.post('/', processOrder)
+router.post('/:id([0-9]{1,})', markDelivered)
 router.get('/', checkOrder)
 router.get('/:id([0-9]{1,})', getOrderById)
+router.get('/history', orderHistory)
 
 /**
  * Stage 2 part 2 functionality
@@ -37,7 +39,7 @@ async function emailUser(data) {
 	const body = `Order number: ${data.orderNumber}\nItems: ${data.itemPrices}\nTotal: £${data.price}\n`
 	const mailOptions = {
 		from: emailCredentials[0], to: data.email, subject: subject, text: body,
-		attachments: [{filename: `order_${data.orderNumber}.png`, path: `${data.qrcode}`}]
+		attachments: [{filename: `order_${data.orderNumber}.png`, path: `public/qrcodes/${data.qrcode}`}]
 	}
 	const mailer = nodemailer.createTransport({
 		service: 'gmail',
@@ -85,7 +87,7 @@ async function checkOrder(ctx) {
 	if (ctx.session.userid === ownerId) {
 		const currentHours = new Date().getHours()
 		if (currentHours > ownerOrderTime) {
-			ctx.hbs.orders = await order.getAll()
+			ctx.hbs.orders = await order.getAll('In progress')
 			ctx.hbs.itemcount = await order.getCount()
 			await ctx.render('owner_orders', ctx.hbs)
 		} else {
@@ -97,7 +99,12 @@ async function checkOrder(ctx) {
 		await ctx.render('user_orders', ctx.hbs)
 	}
 }
-
+/**
+ * Stage 2 part 3 functionality
+ * Upon GET request to orders + a valid id number, renders specific order page
+ * To view the order information, requires the associated userid or the owner id
+ * @param {Object} ctx - JSON object containing the request and associated headers
+ */
 async function getOrderById(ctx) {
 	const id = ctx.params.id
 	const order = await new Order(dbName)
@@ -105,7 +112,6 @@ async function getOrderById(ctx) {
 		const orderDetails = await order.getByOrderId(id)
 		if (orderDetails[0].userid === ctx.session.userid || ctx.session.userid === ownerId) {
 			ctx.hbs.orderdetails = orderDetails[0]
-			console.log(orderDetails[0])
 			await ctx.render('order_details', ctx.hbs)
 		} else {
 			console.log(`User id ${ctx.session.userid} does not match with ${id}`)
@@ -116,6 +122,43 @@ async function getOrderById(ctx) {
 		await ctx.render('error', ctx.hbs)
 	}
 }
-
+/**
+ * Stage 2 part 3 functionality
+ * Upon post request to specific order id, marks updates the status of the order
+ * i.e allows the owner to mark a delivery as delivered
+ * @param {Object} ctx - JSON object containing the request and associated headers
+ * @return {Object} redirect object that sends the owner back to the orders page upon successful POST
+ */
+async function markDelivered(ctx) {
+	const order = await new Order(dbName)
+	let data = ctx.request.body
+	try {
+		data = JSON.parse(data.updatedstatus)
+		await order.updateStatus(data)
+		return ctx.redirect('/orders')
+	} catch(err) {
+		console.log(err)
+	} finally {
+		order.close()
+	}
+}
+/**
+ * Upon GET request to ../history show previously completed orders
+ * In the case of the owner, render a page with all orders and information
+ * In the case of the user, render a page with all their order
+ * @param {Object} ctx - JSON object containing the request and associated headers
+ * @return {Object} redirect object that sends the user to the checkout page upon successful POST
+ */
+async function orderHistory(ctx) {
+	const order = await new Order(dbName)
+	if (ctx.session.userid === ownerId) {
+		ctx.hbs.orders = await order.getAll('Delivered')
+		ctx.hbs.itemcount = await order.getCount()
+		await ctx.render('order_history', ctx.hbs)
+	} else {
+		console.log(`Attempt to access order history by user id ${ctx.session.userid}`)
+		await ctx.render('error')
+	}
+}
 /** Export the router (which includes the associated methods) for use in routes.js */
 export default router

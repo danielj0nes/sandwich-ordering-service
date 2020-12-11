@@ -19,7 +19,6 @@
 			<div class="dropdown-content">
 				<a href="/profile">Profile</a>
 				<a href="/menu">Menu</a>
-				<a href="/checkout">Checkout</a>
 				<a href="/logout">Log Out</a>
 			</div>
 		</div>
@@ -32,8 +31,10 @@
 					<td>{{this.orderNumber}}</td>
 					<td>£{{this.price}}</td>
 					<td>{{this.itemNames}}</td>
-					<td>{{this.completed}}</td>
-					
+					<td>{{this.status}}</td>
+					<td>
+						<input id="goto" type="submit" value="View details" onclick="location.href='/orders/{{this.id}}'"/>
+					</td>
 				</tr>
 				{{/each}}
 			</table>

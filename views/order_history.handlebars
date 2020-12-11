@@ -17,7 +17,7 @@
 		<div class="dropdown">
 			<button class="dropbtn"><i class='fas fa-user-alt' style='font-size:16px'></i> {{this.user}}</button>
 			<div class="dropdown-content">
-				<a href="/orders/history">Order history</a>
+				<a href="/orders">Orders</a>
 				<a href="/menu/edit">Edit menu</a>
 				<a href="/logout">Log Out</a>
 			</div>
@@ -52,29 +52,10 @@
 					<td>£{{this.price}}</td>
 					<td>{{this.itemNames}}</td>
 					<td>{{this.status}}</td>
-					<td>
-						<form method="post" action="/orders/{{this.orderid}}" enctype="multipart/form-data">
-							<input hidden type="text" id="delivered{{this.orderid}}" name="updatedstatus"/>
-							<input id="delivered" type="submit" value="Delivered" onclick='markDelivered({{this.orderid}})'>
-						</form>
-					<input id="goto" type="submit" value="View details" onclick="location.href='/orders/{{this.orderid}}'"/>
-					</td>
 				</tr>
 					
 				{{/each}}
 				</tbody>
-			</table>
-		</div>
-		<div id="item-counts">
-			<table id="pick-list">
-				<p>Pick list</p>
-				<tr><th>Order item</th><th>Amount required to complete</th></tr>
-				{{#each itemcount}}
-				<tr>
-					<td>{{@key}}</td>
-					<td>{{this}}</td>
-				</tr>
-				{{/each}}
 			</table>
 		</div>
 		{{#if msg}}

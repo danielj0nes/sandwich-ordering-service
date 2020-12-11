@@ -24,7 +24,7 @@ class Order {
 			let sql = 'CREATE TABLE IF NOT EXISTS orders(\
 					  id INTEGER PRIMARY KEY AUTOINCREMENT,\
 					  userid INTEGER NOT NULL, items TEXT NOT NULL,\
-					  price INTEGER NOT NULL, completed TEXT NOT NULL DEFAULT "In progress",\
+					  price INTEGER NOT NULL, status TEXT NOT NULL DEFAULT "In progress",\
 					  orderNumber TEXT, itemNames TEXT, itemPrices TEXT, qrcode TEXT,\
 					  FOREIGN KEY (userid) REFERENCES users(id));'
 			await this.db.run(sql)
@@ -78,7 +78,7 @@ class Order {
 	}
 	/**
 	 * Processes a checked out order marking it as ready for the owner to work on
-	 * Runs the updateOrder helper function to create and add in the 10-digit order number
+	 * Runs the updateLast helper function to create and add in the 10-digit order number
 	 * @param {Object} data - JSON object containing the request headers and values
 	 * @return {Object} orderInfo -  on successful processing of order, return JSON object
 	 * @return {Boolean} return true if data but unable to update order, false on removal flag of data status
@@ -91,7 +91,7 @@ class Order {
 				  (${userOrder[0].userid}, '${userOrder[0].items}',
 				  ${userOrder[0].price}, '${userOrder[0].itemNames}', '${userOrder[0].itemPrices}');`
 			await this.db.run(sql)
-			const orderInfo = await this.updateOrder()
+			const orderInfo = await this.updateLast()
 			await this.db.run(`DELETE FROM checkout WHERE ID = ${data.id};`)
 			if (orderInfo) return orderInfo
 			else return true
@@ -106,7 +106,7 @@ class Order {
 	 * Updates the last inserted record with additional data
 	 * This includes: the orderNumber and itemNames
 	 */
-	async updateOrder() {
+	async updateLast() {
 		let sql = 'SELECT * FROM orders WHERE id = (SELECT MAX(id) FROM orders);'
 		const userOrder = await this.db.all(sql) // Get the newly inserted record
 		const orderNumber = userOrder[0].id.toString().padStart(orderNumberLength, '0')
@@ -119,6 +119,17 @@ class Order {
 		} catch (err) {
 			console.log(`Error caught, likely no user table created / in memory - ${err}`)
 		}
+	}
+	/**
+	 * Helper function used in conjunction with the 'processOrder' function
+	 * Updates the last inserted record with additional data
+	 * This includes: the orderNumber and itemNames
+	 */
+	async updateStatus(data) {
+		if (typeof data !== 'object' || data === null) throw new Error('Invalid data sent, must be valid JSON')
+		const sql = `UPDATE orders SET status = "${data.status}" WHERE id = ${data.id};`
+		await this.db.run(sql)
+		return true
 	}
 	/**
 	 * Returns all orders by a given userid
@@ -148,13 +159,15 @@ class Order {
 		}
 	}
 	/**
-	 * Returns all orders and information associated with the user that placed the order
+	 * Returns all orders and information associated with the user that placed the order by status
 	 * Orders the records by postcode to achieve the stage1-part3 functionality
+	 * @param {String} status - The status text, i.e 'In progress' or 'Delivered'
+	 * @param {String} [orderby = 'postcode'] - Optionally order the records, default argument is postcode
 	 * @return {Object} allOrders - Return all records retrieved from the orders table in JSON format
 	 */
-	async getAll() {
-		const sql = 'SELECT orders.id as orderid, * FROM orders\
-					INNER JOIN users ON users.id = orders.userid ORDER BY postcode;'
+	async getAll(status, orderby = 'postcode') {
+		const sql = `SELECT orders.id as orderid, * FROM orders\
+					INNER JOIN users ON users.id = orders.userid WHERE status = "${status}" ORDER BY "${orderby}";`
 		const allOrders = await this.db.all(sql)
 		if (allOrders.length === 0) return false
 		else return allOrders
@@ -166,7 +179,7 @@ class Order {
 	 */
 	async getCount() {
 		const items = []
-		const sql = 'SELECT * FROM orders;'
+		const sql = 'SELECT * FROM orders WHERE status = "In progress";'
 		const allOrders = await this.db.all(sql)
 		if (allOrders.length === 0) return false
 		else {
@@ -179,17 +192,17 @@ class Order {
 		}
 	}
 	/**
-	 * Helper function used in conjunction with the 'updateOrder' helper function
+	 * Helper function used in conjunction with the updateLast function
 	 * Generates a QR code based on the orderNumber and saves it locally to orders/qrcodes
 	 * @param {String} orderNumber - the 10 digit order number string
 	 * @return {String} path - The string path that points to the newly generated QR code
 	 */
 	async generateQRCode(orderNumber) {
-		const path = `orders/qrcodes/${orderNumber}.png`
+		const path = `public/qrcodes/${orderNumber}.png`
 		QRCode.toFile(path, orderNumber, async(err) => {
 			if (err) throw err
 		})
-		return path
+		return `${orderNumber}.png`
 	}
 	async close() {
 		await this.db.close()
