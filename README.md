@@ -9,7 +9,12 @@ The following accounts in conjunction with the password `p455w0rd` allow the sys
 
 ---
 
-## Completed
+## Docs
+Complete JSDocs have been configred in the codio project under the 'docs/' directory.
+
+---
+
+## Completed functionality (all stages and parts)
 
 * Stage 1 part 1 - Customers can login and set up a profile
 ![Stage 1 Part 1 Image](https://i.imgur.com/wlCZgco.png)
