@@ -23,6 +23,7 @@ router.get('/', async ctx => {
 			return ctx.redirect('login?msg=you need to log in')
 		}
 	} catch(err) {
+		ctx.hbs.errormessage = `An error has occured - ${err.message}`
 		await ctx.render('error', ctx.hbs)
 	}
 })
@@ -85,8 +86,8 @@ router.post('/login', async ctx => {
 		else referrer = body.referrer || '/menu'
 		return ctx.redirect(`${referrer}?msg=you are now logged in...`)
 	} catch(err) {
-		ctx.hbs.msg = err.message
-		await ctx.render('login', ctx.hbs)
+		ctx.hbs.errormessage = `An error has occured - ${err.message}`
+		await ctx.render('error', ctx.hbs)
 	} finally {
 		await account.close()
 	}

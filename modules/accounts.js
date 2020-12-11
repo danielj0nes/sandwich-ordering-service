@@ -7,7 +7,9 @@
 
 import bcrypt from 'bcrypt-promise'
 import sqlite from 'sqlite-async'
-
+/**
+ * @const {integer} - The amount of salt rounds that are applied to hashed user password
+ */
 const saltRounds = 10
 
 /**
@@ -33,7 +35,6 @@ class Accounts {
 			return this
 		})()
 	}
-
 	/**
 	 * registers a new user
 	 * @param {String} user the chosen username
@@ -56,7 +57,6 @@ class Accounts {
 		await this.db.run(sql)
 		return true
 	}
-
 	/**
 	 * checks to see if a set of login credentials are valid
 	 * @param {String} username the username to check
