@@ -1,6 +1,7 @@
 
 import test from 'ava'
 import Order from '../modules/orders.js'
+import fs from 'fs-extra'
 
 test('ADDTOCHECKOUT : do not accept checkout with total value equal to 0', async test => {
 	test.plan(1)
@@ -125,6 +126,7 @@ test('PROCESSORDER : attempt to process a checked out order', async test => {
 					   { id: '3', name: 'Tuna Mayonnaise', price: 5 }
 				   ],
 				   itemNames: 'Bacon Sandwich, BLT, Bacon Sandwich, Tuna Mayonnaise',
+				   itemPrices: '5, 5, 5',
 				   userid: 1}
 	try {
 		await order.addToCheckout(toAdd)
@@ -148,6 +150,7 @@ test('PROCESSORDER : attempt to delete a checked out order', async test => {
 					   { id: '3', name: 'Tuna Mayonnaise', price: 5 }
 				   ],
 				   itemNames: 'Bacon Sandwich, BLT, Bacon Sandwich, Tuna Mayonnaise',
+				   itemPrices: '5, 5, 5',
 				   userid: 1}
 	try {
 		await order.addToCheckout(toAdd)
@@ -169,6 +172,26 @@ test('PROCESSORDER : error attempting to process invalid order', async test => {
 		test.fail('Error not raised')
 	} catch(err) {
 		test.is(err.message, 'SQLITE_ERROR: no such column: undefined', 'Incorrect error message')
+	} finally {
+		order.close()
+	}
+})
+
+test('PROCESSORDER : check QR codes created', async test => {
+	test.plan(2)
+	const order = await new Order()
+	/* Since the previous processOrder tests should create some QRCodes, check for these */
+	const path1 = 'orders/qrcodes/0000000001.png'
+	const path2 = 'orders/qrcodes/0000000002.png'
+	try {
+		let result = fs.existsSync(path1)
+		test.is(result, true, `Expected true, got ${result}`)
+		fs.unlinkSync(path1) // Delete the file after test
+		result = fs.existsSync(path2)
+		test.is(result, true, `Expected true, got ${result}`)
+		fs.unlinkSync(path2)
+	} catch(err) {
+		test.fail(`Error occured during testing ${err}`)
 	} finally {
 		order.close()
 	}
@@ -269,3 +292,4 @@ test('GETCOUNT : attempt to count with no data', async test => {
 		order.close()
 	}
 })
+

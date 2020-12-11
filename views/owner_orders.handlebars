@@ -4,14 +4,14 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Order status and history for users</title>
-		<meta name="description" content="Sandwich Ordering Service - Checkout - Customer">
+		<title>Order status and history for the owner</title>
+		<meta name="description" content="Sandwich Ordering Service - Orders - Owner">
 		<meta name="author" content="Daniel Jones">
 		<link href="{{host}}/style.css" type="text/css" rel="stylesheet" />
 		<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 		<script type="module" src="{{host}}/main.js"></script>
 	</head>
-	<body onload='convertStatus()'>
+	<body>
 		<header>
 		<h1>Orders</h1>
 		<div class="dropdown">
@@ -57,8 +57,8 @@
 						<form method="post" action="/orders/{{this.orderid}}" enctype="multipart/form-data">
 							<input hidden type="text" id="orderinstruction{{this.id}}"/>
 							<input id="delivered" type="submit" value="Delivered" onclick=''>
-							<input id="goto" type="submit" value="Details" onclick=''>
 						</form>
+					<input id="goto" type="submit" value="View details" onclick="location.href='/orders/{{this.orderid}}'"/>
 					</td>
 				</tr>
 					

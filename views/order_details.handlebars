@@ -4,8 +4,8 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<title>Order status and history for users</title>
-		<meta name="description" content="Sandwich Ordering Service - Orders - Customer">
+		<title>Specific order details for a user order</title>
+		<meta name="description" content="Sandwich Ordering Service - Order Details">
 		<meta name="author" content="Daniel Jones">
 		<link href="{{host}}/style.css" type="text/css" rel="stylesheet" />
 		<script src="https://kit.fontawesome.com/a076d05399.js"></script>
@@ -13,7 +13,7 @@
 	</head>
 	<body>
 		<header>
-		<h1>Orders</h1>
+		<h1>Details for Order No. {{orderdetails.orderNumber}}</h1>
 		<div class="dropdown">
 			<button class="dropbtn"><i class='fas fa-user-alt' style='font-size:16px'></i> {{this.user}}</button>
 			<div class="dropdown-content">
@@ -26,16 +26,14 @@
 		</header>
 		<main>
 			<table id="orders">
-				<tr><th>Order Number</th><th>Price</th><th>Items</th><th>Status</th></tr>
-				{{#each order}}
-				<tr>
-					<td>{{this.orderNumber}}</td>
-					<td>£{{this.price}}</td>
-					<td>{{this.itemNames}}</td>
-					<td>{{this.completed}}</td>
-					
-				</tr>
-				{{/each}}
+				<tr><th>Order Number</th><th>Items</th><th>Total</th><th>Status</th></tr>
+					<tr>
+						<td>{{orderdetails.orderNumber}}</td>
+						<td>{{orderdetails.itemPrices}}</td>
+						<td>{{orderdetails.price}}</td>
+						<td>{{orderdetails.completed}}</td>
+						<td><img src="{{orderdetails.qrcode}}"/></td>
+					</tr>
 			</table>
 		</main>
 		{{#if msg}}
@@ -43,5 +41,6 @@
 				<p class="msg">{{msg}}</p>
 			</aside>
 		{{/if}}
+
 	</body>
 </html>
