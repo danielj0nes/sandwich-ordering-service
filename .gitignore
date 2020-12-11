@@ -30,3 +30,4 @@ config.json
 *.c9
 
 shell_script_testing.sh
+emailconfig.txt

@@ -93,7 +93,7 @@ class Accounts {
 	async update(data, userid) {
 		if (typeof data !== 'object' || data === null) throw new Error('Invalid data sent, must be valid JSON')
 		const sql = `UPDATE users SET firstName = "${data.firstName}",
-					lastName = "${data.lastName}", company = "${data.company}",
+					lastName = "${data.lastName}", email = "${data.email}", company = "${data.company}",
 					addressLine1 = "${data.addressLine1}", addressLine2 = "${data.addressLine2}",
 					city = "${data.city}", postcode = "${data.postcode}" WHERE id = ${userid};`
 		await this.db.run(sql)
