@@ -1,4 +1,4 @@
-# Sandwich Ordering Service - Daniel Jones - 7929997
+# Sandwich Ordering Service
 
 ## Testing
 The following accounts in conjunction with the password `p455w0rd` allow the system to be tested.
