@@ -34,7 +34,7 @@
 		"koa-static": "^5.0.0",
 		"koa-views": "^6.3.0",
 		"mime-types": "^2.1.27",
-		"nodemailer": "^6.4.16",
+		"nodemailer": "^6.6.1",
 		"qrcode": "^1.4.4",
 		"save-dev": "0.0.1-security",
 		"sqlite-async": "^1.1.0"
